@@ -2,174 +2,367 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Valentine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
     <style>
-        /* MOODY & VIBRANT THEME */
+        /* --- RESET & ATMOSPHERE --- */
+        * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        
         body {
             margin: 0;
             padding: 0;
             height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: #1a0b2e; /* Deep purple night */
+            font-family: 'Quicksand', sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #240b36 0%, #c31432 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; 
             color: white;
-            text-align: center;
         }
 
-        /* GLASS CARD CONTAINER */
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 50px;
-            border-radius: 25px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            width: 400px;
-            max-width: 90%;
+        /* --- VIGNETTE & GRADIENT --- */
+        /* Creates a moody dark border focus */
+        .vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, #000000 150%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .gradient-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Deep, slow, romantic colors */
+            background: linear-gradient(120deg, #2b1055, #7597de, #2b1055);
+            background-size: 300% 300%;
+            animation: deepBreath 30s ease infinite; /* Extremely slow shift */
+            z-index: -2;
+        }
+
+        @keyframes deepBreath {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- FLOATING PARTICLES (Background) --- */
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1); /* Very subtle */
+            font-size: 1.5rem;
+            animation: floatUp linear forwards;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            to { transform: translateY(-10vh) rotate(20deg); opacity: 0; }
+        }
+
+        /* --- INTRO: THE ENVELOPE --- */
+        #intro-screen {
+            z-index: 100;
+            text-align: center;
+            cursor: pointer;
+            transition: opacity 1.5s ease;
+        }
+        
+        .envelope-icon {
+            font-size: 6rem;
+            /* A slow, gentle heartbeat */
+            animation: gentleBeat 3s infinite ease-in-out; 
+            filter: drop-shadow(0 0 30px rgba(255, 192, 203, 0.4));
+        }
+
+        .tap-text {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            animation: fadeInOut 4s infinite;
+        }
+
+        /* --- MAIN CARD (Glassmorphism) --- */
+        .card {
+            position: relative;
+            background: rgba(20, 20, 30, 0.3); /* Dark glass */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 50px 40px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 420px;
+            max-width: 85%;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
             z-index: 10;
+            display: none; /* Hidden initially */
         }
 
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem; /* Larger, more elegant */
+            margin: 0 0 30px 0;
+            background: linear-gradient(to right, #fff, #ffc3a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
-        .mascots {
+        .mascot-area {
             font-size: 4rem;
             margin-bottom: 20px;
-            animation: bounce 2s infinite ease-in-out;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
         }
 
-        /* BUTTON LAYOUT FIX */
+        /* --- BUTTONS --- */
         .btn-container {
+            position: relative;
+            height: 100px; /* Space for buttons */
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px; /* Space between buttons */
-            margin-top: 30px;
-            min-height: 60px; /* Reserves space */
         }
 
         button {
-            padding: 12px 35px;
-            font-size: 1.2rem;
             border: none;
+            padding: 15px 45px;
             border-radius: 50px;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.5s ease;
+            font-family: 'Quicksand', sans-serif;
             font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
 
         #yesBtn {
-            background-color: #ff007f; /* Vibrant Pink */
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
-            z-index: 20; /* Ensures YES is always clickable */
+            background: #fff;
+            color: #2b1055;
+            z-index: 5;
         }
-
+        
         #yesBtn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.6);
+            transform: scale(1.05);
+            background: #ffc3a0;
+            box-shadow: 0 0 30px rgba(255, 195, 160, 0.6);
         }
 
         #noBtn {
-            background-color: #ffffff;
-            color: #240b36;
-            /* No absolute positioning here initially */
+            position: absolute; /* Allows floating */
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.7);
+            /* Start position (offset from center) */
+            transform: translateX(80px); 
         }
 
-        /* HIDDEN SUCCESS MESSAGE */
-        #successMessage {
-            display: none;
-            margin-top: 20px;
-            font-size: 1.5rem;
-            color: #ffb7b2;
-            font-weight: bold;
-            animation: fadeIn 1s;
-        }
-
-        /* ANIMATIONS */
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* FLOATING BACKGROUND ICONS */
-        .bg-icon {
+        /* --- EMERGENCY "YES" RAIN --- */
+        .falling-yes {
             position: absolute;
-            opacity: 0.15;
-            font-size: 3rem;
-            z-index: 0;
-            animation: float 10s infinite linear;
-            pointer-events: none; /* Prevents clicking bg items */
+            background: rgba(255, 255, 255, 0.9);
+            color: #2b1055;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            pointer-events: auto;
+            cursor: pointer;
+            animation: slowFall 8s linear forwards; /* Much slower fall */
+            z-index: 100;
         }
-        
-        @keyframes float {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-10vh) rotate(360deg); }
+
+        @keyframes slowFall {
+            from { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            to { transform: translateY(110vh) rotate(40deg); opacity: 0.8; }
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes gentleBeat { 
+            0%, 100% { transform: scale(1); } 
+            50% { transform: scale(1.05); } 
+        }
+        @keyframes fadeInOut { 
+            0%, 100% { opacity: 0.4; } 
+            50% { opacity: 0.8; } 
+        }
+
+        /* --- SUCCESS --- */
+        #success-msg {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            z-index: 50;
+        }
+        #success-msg h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            color: #ffc3a0;
+            text-shadow: 0 0 20px rgba(255, 195, 160, 0.4);
         }
 
     </style>
 </head>
 <body>
 
-    <div class="bg-icon" style="left: 10%; animation-duration: 15s; font-size: 4rem;">🐻</div>
-    <div class="bg-icon" style="left: 30%; animation-duration: 12s; font-size: 2rem;">🐰</div>
-    <div class="bg-icon" style="left: 50%; animation-duration: 18s; font-size: 3rem;">💖</div>
-    <div class="bg-icon" style="left: 70%; animation-duration: 14s; font-size: 4rem;">🐻</div>
-    <div class="bg-icon" style="left: 90%; animation-duration: 10s; font-size: 2rem;">🐰</div>
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="container">
-        <div class="mascots">🐻 💖 🐰</div>
+    <div class="vignette"></div>
+    <div class="gradient-bg"></div>
+    
+    <div id="particle-container"></div>
+
+    <div id="intro-screen" onclick="startRomanticExperience()">
+        <div class="envelope-icon">♥️</div>
+        <div class="tap-text">Tap to open</div>
+    </div>
+
+    <div class="card" id="main-card">
+        <div class="mascot-area">🐻 ✨ 🐰</div>
         <h1>Krisha will you be my Valentine?</h1>
         
         <div class="btn-container">
-            <button id="yesBtn" onclick="acceptProposal()">YES</button>
-            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">NO</button>
-        </div>
-
-        <div id="successMessage">
-            Yay! See you on the 14th, Love you! 💖🐰🐻
+            <button id="yesBtn" onclick="sheSaidYes()">YES</button>
+            
+            <button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">NO</button>
         </div>
     </div>
 
-    <script>
-        const noBtn = document.getElementById('noBtn');
-        const yesBtn = document.getElementById('yesBtn');
-        const successMsg = document.getElementById('successMessage');
-        
-        function moveButton() {
-            // Calculate random position within the viewport
-            // Subtract button size to keep it from going off-screen
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+    <div id="success-msg">
+        <div style="font-size: 5rem; animation: gentleBeat 3s infinite;">💖💏🙈</div>
+        <h2>I love you.</h2>
+        <p style="font-size: 1.2rem; opacity: 0.8;">Ill make this one special for you!</p>
+    </div>
 
-            // Apply fixed positioning to break it out of the flex container
-            noBtn.style.position = 'fixed'; 
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
+    <script>
+        // --- SETTINGS ---
+        const particleContainer = document.getElementById('particle-container');
+        const card = document.getElementById('main-card');
+        const intro = document.getElementById('intro-screen');
+        const noBtn = document.getElementById('noBtn');
+        const music = document.getElementById('bg-music');
+        
+        let noClicks = 0;
+
+        // --- 1. SLOW BACKGROUND PARTICLES ---
+        function createParticles() {
+            // Create a new particle every 400ms (Slow generation)
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.classList.add('floating-heart');
+                p.innerHTML = ['❤', '✨', '🌸', '🤍'][Math.floor(Math.random()*4)];
+                p.style.left = Math.random() * 100 + 'vw';
+                // Randomize speed (between 15s and 25s for very slow rise)
+                p.style.animationDuration = (Math.random() * 10 + 15) + 's'; 
+                p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                particleContainer.appendChild(p);
+                
+                // Cleanup to keep DOM light
+                setTimeout(() => p.remove(), 25000);
+            }, 400);
+        }
+        createParticles();
+
+        // --- 2. START EXPERIENCE ---
+        function startRomanticExperience() {
+            // Attempt to play music
+            try {
+                music.volume = 0.5; // Soft volume
+                music.play().catch(e => console.log("Audio requires interaction"));
+            } catch(e) {}
+
+            // Fade out intro
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.display = 'none';
+                // Fade in Card
+                card.style.display = 'block';
+                // Trigger reflow
+                void card.offsetWidth;
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+            }, 1000);
         }
 
-        function acceptProposal() {
-            // Hide the buttons
-            document.querySelector('.btn-container').style.display = 'none';
-            // Show the message
-            successMsg.style.display = 'block';
-            // Change the mascots
-            document.querySelector('.mascots').innerHTML = '🥂 💕 🎉';
-            // Celebrate background
-            document.body.style.background = 'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)';
+        // --- 3. THE "NO" BUTTON (GENTLE EVASION) ---
+        function moveNo() {
+            noClicks++;
+            
+            // Text feedback
+            const phrases = ["Are you sure?", "Look again...", "Over here...", "Try Yes...", "Please?"];
+            noBtn.innerText = phrases[noClicks % phrases.length];
+
+            // Calculate new position
+            // We use a smaller range so it doesn't fly off screen too aggressively
+            const x = (Math.random() - 0.5) * 250;
+            const y = (Math.random() - 0.5) * 250;
+
+            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+            
+            // If she persists, trigger "Love Rain" (The Swarm)
+            if(noClicks > 4) {
+                spawnLoveRain();
+            }
+        }
+
+        // --- 4. LOVE RAIN (FALLING YES BUTTONS) ---
+        function spawnLoveRain() {
+            const btn = document.createElement('div');
+            btn.classList.add('falling-yes');
+            btn.innerText = "YES ❤";
+            btn.style.left = Math.random() * 90 + 'vw';
+            // Randomize fall speed (slow)
+            btn.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            
+            btn.onclick = sheSaidYes; // Any floating button works
+            document.body.appendChild(btn);
+
+            // Remove after animation
+            setTimeout(() => btn.remove(), 8000);
+        }
+
+        // --- 5. SUCCESS ---
+        function sheSaidYes() {
+            // Fade out card
+            card.style.transition = "all 1s ease";
+            card.style.opacity = "0";
+            card.style.transform = "scale(1.1)";
+            
+            setTimeout(() => {
+                card.style.display = 'none';
+                document.getElementById('success-msg').style.display = 'block';
+                
+                // Intensify Particles for celebration
+                setInterval(() => {
+                    const p = document.createElement('div');
+                    p.classList.add('floating-heart');
+                    p.innerHTML = '💖';
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.animationDuration = '5s'; // Faster for celebration
+                    p.style.fontSize = '30px';
+                    particleContainer.appendChild(p);
+                    setTimeout(() => p.remove(), 5000);
+                }, 100);
+
+            }, 1000);
         }
     </script>
 </body>
