@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        /* MOODY & VIBRANT THEME */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #240b36 0%, #c31432 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; 
+            color: white;
+            text-align: center;
+        }
+
+        /* GLASS CARD CONTAINER */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 400px;
+            max-width: 90%;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .mascots {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        /* BUTTON LAYOUT FIX */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px; /* Space between buttons */
+            margin-top: 30px;
+            min-height: 60px; /* Reserves space */
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        #yesBtn {
+            background-color: #ff007f; /* Vibrant Pink */
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+            z-index: 20; /* Ensures YES is always clickable */
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.6);
+        }
+
+        #noBtn {
+            background-color: #ffffff;
+            color: #240b36;
+            /* No absolute positioning here initially */
+        }
+
+        /* HIDDEN SUCCESS MESSAGE */
+        #successMessage {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #ffb7b2;
+            font-weight: bold;
+            animation: fadeIn 1s;
+        }
+
+        /* ANIMATIONS */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* FLOATING BACKGROUND ICONS */
+        .bg-icon {
+            position: absolute;
+            opacity: 0.15;
+            font-size: 3rem;
+            z-index: 0;
+            animation: float 10s infinite linear;
+            pointer-events: none; /* Prevents clicking bg items */
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-icon" style="left: 10%; animation-duration: 15s; font-size: 4rem;">🐻</div>
+    <div class="bg-icon" style="left: 30%; animation-duration: 12s; font-size: 2rem;">🐰</div>
+    <div class="bg-icon" style="left: 50%; animation-duration: 18s; font-size: 3rem;">💖</div>
+    <div class="bg-icon" style="left: 70%; animation-duration: 14s; font-size: 4rem;">🐻</div>
+    <div class="bg-icon" style="left: 90%; animation-duration: 10s; font-size: 2rem;">🐰</div>
+
+    <div class="container">
+        <div class="mascots">🐻 💖 🐰</div>
+        <h1>Krisha will you be my Valentine?</h1>
+        
+        <div class="btn-container">
+            <button id="yesBtn" onclick="acceptProposal()">YES</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">NO</button>
+        </div>
+
+        <div id="successMessage">
+            Yay! See you on the 14th, Love you! 💖🐰🐻
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const successMsg = document.getElementById('successMessage');
+        
+        function moveButton() {
+            // Calculate random position within the viewport
+            // Subtract button size to keep it from going off-screen
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+
+            // Apply fixed positioning to break it out of the flex container
+            noBtn.style.position = 'fixed'; 
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
+
+        function acceptProposal() {
+            // Hide the buttons
+            document.querySelector('.btn-container').style.display = 'none';
+            // Show the message
+            successMsg.style.display = 'block';
+            // Change the mascots
+            document.querySelector('.mascots').innerHTML = '🥂 💕 🎉';
+            // Celebrate background
+            document.body.style.background = 'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)';
+        }
+    </script>
+</body>
+</html>
