@@ -37,7 +37,7 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             /* Deep, slow, romantic colors */
-            background: linear-gradient(120deg, #2b1055, #7597de, #2b1055);
+            background: linear-gradient(120deg, #1c0146, #ff208f, #2b1055);
             background-size: 300% 300%;
             animation: deepBreath 30s ease infinite; /* Extremely slow shift */
             z-index: -2;
@@ -357,6 +357,7 @@
                     p.innerHTML = '💖';
                     p.style.left = Math.random() * 100 + 'vw';
                     p.style.animationDuration = '5s'; // Faster for celebration
+                    p.style.opacity = '0.9';
                     p.style.fontSize = '30px';
                     particleContainer.appendChild(p);
                     setTimeout(() => p.remove(), 5000);
