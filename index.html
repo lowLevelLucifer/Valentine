@@ -4,230 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For My Valentine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         /* --- RESET & ATMOSPHERE --- */
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            background: #1a0b2e; /* Deep purple night */
-            font-family: 'Quicksand', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
+            margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
+            background: #1a0b2e; font-family: 'Quicksand', sans-serif;
+            display: flex; justify-content: center; align-items: center; color: white;
         }
 
-        /* --- VIGNETTE & GRADIENT --- */
-        /* Creates a moody dark border focus */
-        .vignette {
+        /* --- LYRIC STAGE (NEW) --- */
+        #lyrics-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 8%; /* Positioned near top */
+            width: 100%;
+            text-align: center;
+            z-index: 1000; /* Above everything */
+            pointer-events: none; /* Allows clicking through it */
+            padding: 0 20px;
+        }
+
+        #lyric-line {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            color: #ffc3a0;
+            text-shadow: 0 0 15px rgba(255, 195, 160, 0.6), 0 0 5px rgba(255, 255, 255, 0.4);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .lyric-visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* --- BACKGROUND EFFECTS --- */
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, transparent 40%, #000000 150%);
-            z-index: 1;
-            pointer-events: none;
+            z-index: 1; pointer-events: none;
         }
 
         .gradient-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* Deep, slow, romantic colors */
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(120deg, #1c0146, #ff208f, #2b1055);
             background-size: 300% 300%;
-            animation: deepBreath 30s ease infinite; /* Extremely slow shift */
+            animation: deepBreath 30s ease infinite;
             z-index: -2;
         }
+        @keyframes deepBreath { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        @keyframes deepBreath {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* --- FLOATING PARTICLES (Background) --- */
         .floating-heart {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.1); /* Very subtle */
-            font-size: 1.5rem;
-            animation: floatUp linear forwards;
-            pointer-events: none;
-            z-index: 0;
+            position: absolute; color: rgba(255, 255, 255, 0.1); font-size: 1.5rem;
+            animation: floatUp linear forwards; pointer-events: none; z-index: 0;
         }
-
         @keyframes floatUp {
             from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
+            10% { opacity: 0.3; } 90% { opacity: 0.3; }
             to { transform: translateY(-10vh) rotate(20deg); opacity: 0; }
         }
 
-        /* --- INTRO: THE ENVELOPE --- */
-        #intro-screen {
-            z-index: 100;
-            text-align: center;
-            cursor: pointer;
-            transition: opacity 1.5s ease;
-        }
-        
-        .envelope-icon {
-            font-size: 6rem;
-            /* A slow, gentle heartbeat */
-            animation: gentleBeat 3s infinite ease-in-out; 
-            filter: drop-shadow(0 0 30px rgba(255, 192, 203, 0.4));
-        }
+        /* --- CARDS & UI --- */
+        #intro-screen { z-index: 100; text-align: center; cursor: pointer; transition: opacity 1.5s ease; }
+        .envelope-icon { font-size: 6rem; animation: gentleBeat 3s infinite ease-in-out; filter: drop-shadow(0 0 30px rgba(255, 192, 203, 0.4)); }
+        .tap-text { margin-top: 15px; font-size: 1.2rem; letter-spacing: 2px; opacity: 0.7; animation: fadeInOut 4s infinite; }
 
-        .tap-text {
-            margin-top: 15px;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            opacity: 0.7;
-            animation: fadeInOut 4s infinite;
-        }
-
-        /* --- MAIN CARD (Glassmorphism) --- */
-        .card {
-            position: relative;
-            background: rgba(20, 20, 30, 0.3); /* Dark glass */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 50px 40px;
-            border-radius: 40px;
+        .glass-card {
+            position: relative; background: rgba(20, 20, 30, 0.3);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            text-align: center;
-            width: 420px;
-            max-width: 85%;
-            transform: scale(0.9);
-            opacity: 0;
-            transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-            z-index: 10;
-            display: none; /* Hidden initially */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); text-align: center;
+            border-radius: 40px; z-index: 10;
         }
 
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem; /* Larger, more elegant */
-            margin: 0 0 30px 0;
-            background: linear-gradient(to right, #fff, #ffc3a0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.2;
-        }
-
-        .mascot-area {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
-        }
-
-        /* --- BUTTONS --- */
-        .btn-container {
-            position: relative;
-            height: 100px; /* Space for buttons */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        button {
-            border: none;
-            padding: 15px 45px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.5s ease;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        #yesBtn {
-            background: #fff;
-            color: #2b1055;
-            z-index: 5;
-        }
+        #main-card { padding: 50px 40px; width: 420px; max-width: 85%; transform: scale(0.9); opacity: 0; transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1); display: none; }
         
-        #yesBtn:hover {
-            transform: scale(1.05);
-            background: #ffc3a0;
-            box-shadow: 0 0 30px rgba(255, 195, 160, 0.6);
-        }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; margin: 0 0 30px 0; background: linear-gradient(to right, #fff, #ffc3a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; }
+        .mascot-area { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
 
-        #noBtn {
-            position: absolute; /* Allows floating */
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.3);
-            color: rgba(255,255,255,0.7);
-            /* Start position (offset from center) */
-            transform: translateX(80px); 
-        }
+        .btn-container { position: relative; height: 100px; display: flex; justify-content: center; align-items: center; }
+        button { border: none; padding: 15px 45px; border-radius: 50px; font-size: 1.2rem; cursor: pointer; transition: all 0.5s ease; font-family: 'Quicksand', sans-serif; font-weight: bold; letter-spacing: 1px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        #yesBtn { background: #fff; color: #2b1055; z-index: 5; }
+        #yesBtn:hover { transform: scale(1.05); background: #ffc3a0; box-shadow: 0 0 30px rgba(255, 195, 160, 0.6); }
+        #noBtn { position: absolute; background: transparent; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); transform: translateX(80px); }
 
-        /* --- EMERGENCY "YES" RAIN --- */
-        .falling-yes {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.9);
-            color: #2b1055;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            pointer-events: auto;
-            cursor: pointer;
-            animation: slowFall 8s linear forwards; /* Much slower fall */
-            z-index: 100;
-        }
+        .falling-yes { position: fixed; background: #fff; color: #ff007f; padding: 10px 25px; border-radius: 30px; font-size: 1.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer; animation: rainFall 4s linear forwards; z-index: 9999; white-space: nowrap; }
+        .falling-yes:hover { background: #ffc3a0; transform: scale(1.1); }
+        @keyframes rainFall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(20deg); opacity: 0; } }
 
-        @keyframes slowFall {
-            from { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            to { transform: translateY(110vh) rotate(40deg); opacity: 0.8; }
-        }
+        #success-msg { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 100%; z-index: 50; animation: fadeIn 2s ease; }
+        #success-msg h2 { font-family: 'Dancing Script', cursive; font-size: 4.5rem; margin-bottom: 20px; color: #ffc3a0; text-shadow: 0 0 20px rgba(255, 195, 160, 0.4); }
+        .next-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 30px; margin-top: 30px; font-size: 1rem; animation: pulseBtn 2s infinite; }
+        .next-btn:hover { background: white; color: #2b1055; }
 
-        /* --- ANIMATIONS --- */
-        @keyframes gentleBeat { 
-            0%, 100% { transform: scale(1); } 
-            50% { transform: scale(1.05); } 
-        }
-        @keyframes fadeInOut { 
-            0%, 100% { opacity: 0.4; } 
-            50% { opacity: 0.8; } 
-        }
+        #schedule-screen { display: none; width: 90%; max-width: 450px; height: 70vh; padding: 30px; opacity: 0; transform: translateY(20px); transition: all 1s ease; flex-direction: column; }
+        .scroll-area { overflow-y: auto; height: 100%; padding-right: 10px; margin-top: 20px; } /* Added margin for lyrics space */
+        .scroll-area::-webkit-scrollbar { width: 5px; }
+        .scroll-area::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        .day-item { background: rgba(255, 255, 255, 0.05); margin-bottom: 15px; padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; opacity: 0; transform: translateX(-20px); }
+        .day-item:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.02); }
+        .day-date { font-weight: bold; color: #ffc3a0; font-size: 0.9rem; min-width: 50px; }
+        .day-title { font-size: 1.1rem; font-weight: 500; }
+        .day-icon { font-size: 1.5rem; }
 
-        /* --- SUCCESS --- */
-        #success-msg {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: 100%;
-            z-index: 50;
-        }
-        #success-msg h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4.5rem;
-            margin-bottom: 20px;
-            color: #ffc3a0;
-            text-shadow: 0 0 20px rgba(255, 195, 160, 0.4);
-        }
+        @keyframes gentleBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes fadeInOut { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulseBtn { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+        @keyframes slideInRight { to { opacity: 1; transform: translateX(0); } }
 
     </style>
 </head>
 <body>
 
     <audio id="bg-music" loop>
-        <source src="song.mp3" type="audio/mpeg">
+        <source src="loveMe.mpeg" type="audio/mpeg">
     </audio>
+
+    <div id="lyrics-overlay">
+        <div id="lyric-line"></div>
+    </div>
 
     <div class="vignette"></div>
     <div class="gradient-bg"></div>
-    
     <div id="particle-container"></div>
 
     <div id="intro-screen" onclick="startRomanticExperience()">
@@ -235,13 +139,11 @@
         <div class="tap-text">Tap to open</div>
     </div>
 
-    <div class="card" id="main-card">
+    <div class="glass-card" id="main-card">
         <div class="mascot-area">🐻 ✨ 🐰</div>
-        <h1>Krisha will you be my Valentine?</h1>
-        
+        <h1>Krisha, will you be my Valentine?</h1>
         <div class="btn-container">
             <button id="yesBtn" onclick="sheSaidYes()">YES</button>
-            
             <button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">NO</button>
         </div>
     </div>
@@ -249,120 +151,220 @@
     <div id="success-msg">
         <div style="font-size: 5rem; animation: gentleBeat 3s infinite;">💖💏🙈</div>
         <h2>I love you.</h2>
-        <p style="font-size: 1.2rem; opacity: 0.8;">Ill make this one special for you!</p>
+        <p style="font-size: 1.2rem; opacity: 0.8;">I'll make this special for you!</p>
+        <button class="next-btn" onclick="showSchedule()">The Countdown</button>
+    </div>
+
+    <div class="glass-card" id="schedule-screen">
+        <h2 style="font-family:'Dancing Script',cursive; font-size:2.5rem; margin-top:0;">Our Week of Love</h2>
+        <div class="scroll-area">
+            <div class="day-item" style="animation-delay: 0.1s"><div class="day-icon">🌹</div><div><div class="day-date">Feb 7</div><div class="day-title">Rose Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.2s"><div class="day-icon">💍</div><div><div class="day-date">Feb 8</div><div class="day-title">Propose Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.3s"><div class="day-icon">♥️</div><div><div class="day-date">Feb 9</div><div class="day-title">Syrup Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.4s"><div class="day-icon">🧸</div><div><div class="day-date">Feb 10</div><div class="day-title">Teddy Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.5s"><div class="day-icon">🤝</div><div><div class="day-date">Feb 11</div><div class="day-title">Promise Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.6s"><div class="day-icon">🫂</div><div><div class="day-date">Feb 12</div><div class="day-title">Hug Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.7s"><div class="day-icon">💋</div><div><div class="day-date">Feb 13</div><div class="day-title">Kiss Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.8s; background: rgba(255,0,127,0.2); border: 1px solid rgba(255,0,127,0.5);"><div class="day-icon">❤️</div><div><div class="day-date">Feb 14</div><div class="day-title">Valentine's Day</div></div></div>
+        </div>
     </div>
 
     <script>
-        // --- SETTINGS ---
+        // --- CONFIGURATION ---
         const particleContainer = document.getElementById('particle-container');
         const card = document.getElementById('main-card');
         const intro = document.getElementById('intro-screen');
+        const successMsg = document.getElementById('success-msg');
+        const scheduleScreen = document.getElementById('schedule-screen');
         const noBtn = document.getElementById('noBtn');
         const music = document.getElementById('bg-music');
-        
+        const lyricLine = document.getElementById('lyric-line');
         let noClicks = 0;
 
-        // --- 1. SLOW BACKGROUND PARTICLES ---
+        // --- LYRIC SYNC ENGINE ---
+        // I have estimated these timestamps based on the song flow.
+        // YOU MUST TWEAK THESE NUMBERS to match your specific MP3 file.
+        const lyrics = [
+            { time: 17, text: "My friends say I'm a fool to think that you're the one for me" },
+            { time: 21, text: "I guess I'm just a sucker for love" },
+            { time: 25, text: "'Cause honestly the truth is that you know I'm never leaving" },
+            { time: 29, text: "'Cause you're my angel sent from above" },
+            
+            { time: 33, text: "Baby you can do no wrong, my money is yours" },
+            { time: 37, text: "Give you little more because I love ya, love ya" },
+            { time: 40, text: "With me, girl, is where you belong, just stay right here" },
+            { time: 44, text: "I promise my dear I'll put nothing above ya, above ya" },
+            
+            // Chorus
+            { time: 48, text: "Love me, love me, say that you love me" },
+            { time: 52, text: "Fool me, fool me, oh how you do me" },
+            { time: 56, text: "Kiss me, kiss me, say that you miss me" },
+            { time: 60, text: "Tell me what I want to hear, tell me you love me" },
+            
+            { time: 63, text: "Love me, love me, say that you love me" },
+            { time: 68, text: "Fool me, fool me, oh how you do me" },
+            { time: 71, text: "Kiss me, kiss me, say that you miss me" },
+            { time: 75, text: "Tell me what I want to hear, tell me you love me" },
+
+            // Verse 2
+            { time: 79, text: "People try to tell me but I still refuse to listen" },
+            { time: 82, text: "'Cause they don't get to spend time with you" },
+            { time: 86, text: "A minute with you is worth more than..." },
+            { time: 89, text: "A thousand days without your love, oh your love" },
+
+            // Chorus Repeats (Approximation)
+            { time: 94, text: "Baby you can do no wrong, my money is yours" },
+            { time: 98, text: "Give you little more because I love ya, love ya" },
+            { time: 102, text: "With me, girl, is where you belong, just stay right here" },
+            { time: 105, text: "I promise my dear I'll put nothing above ya, above ya" },
+            { time: 110, text: "Love me, love me, say that you love me" },
+            { time: 113, text: "Fool me, fool me, oh how you do me" },
+            { time: 117, text: "Kiss me, kiss me, say that you miss me" },
+            { time: 121, text: "Tell me what I want to hear, tell me you love me" },
+            { time: 125, text: "Love me, love me, say that you love me" },
+            { time: 129, text: "Fool me, fool me, oh how you do me" },
+            { time: 133, text: "Kiss me, kiss me, say that you miss me" },
+            { time: 137, text: "Tell me what I want to hear, tell me you love me" },
+            { time: 141, text: "My heart is blind but I don't care" },
+            { time: 145, text: "'Cause when I'm with you everything has disappeared" },
+            { time: 149, text: "And every time I hold ya near" },
+            { time: 153, text: "I never want to let ya go, oh" },
+            { time: 156, text: "Love me, love me, say that you love me" },
+            { time: 160, text: "Fool me, fool me, oh how you do me" },
+            { time: 164, text: "Kiss me, kiss me, say that you miss me" },
+            { time: 167, text: "Tell me what I want to hear, tell me you love me" },
+            { time: 172, text: "Love me, love me, say that you love me" },
+            { time: 175, text: "Fool me, fool me, oh how you do me" },
+            { time: 179, text: "Kiss me, kiss me, say that you miss me" },
+            { time: 183, text: "Tell me what I want to hear, tell me you love me" },
+        ];
+
+        // This runs 4 times a second to check the time
+        music.addEventListener('timeupdate', () => {
+            const currentTime = music.currentTime;
+            
+            // Find the lyric that matches the current time
+            const currentLyric = lyrics.find((line, index) => {
+                const nextLine = lyrics[index + 1];
+                return currentTime >= line.time && (!nextLine || currentTime < nextLine.time);
+            });
+
+            if (currentLyric) {
+                // Only update if the text is different (prevents flickering)
+                if (lyricLine.innerText !== currentLyric.text) {
+                    // Fade out
+                    lyricLine.classList.remove('lyric-visible');
+                    
+                    setTimeout(() => {
+                        lyricLine.innerText = currentLyric.text;
+                        // Fade in
+                        lyricLine.classList.add('lyric-visible');
+                    }, 300); // Wait for fade out to finish
+                }
+            } else {
+                // If no lyric matches (intro or outro), hide the line
+                lyricLine.classList.remove('lyric-visible');
+            }
+        });
+
+
+        // --- PARTICLES ---
         function createParticles() {
-            // Create a new particle every 400ms (Slow generation)
             setInterval(() => {
                 const p = document.createElement('div');
                 p.classList.add('floating-heart');
                 p.innerHTML = ['❤', '✨', '🌸', '🤍'][Math.floor(Math.random()*4)];
                 p.style.left = Math.random() * 100 + 'vw';
-                // Randomize speed (between 15s and 25s for very slow rise)
                 p.style.animationDuration = (Math.random() * 10 + 15) + 's'; 
                 p.style.fontSize = (Math.random() * 20 + 10) + 'px';
                 particleContainer.appendChild(p);
-                
-                // Cleanup to keep DOM light
                 setTimeout(() => p.remove(), 25000);
             }, 400);
         }
         createParticles();
 
-        // --- 2. START EXPERIENCE ---
+        // --- BUTTON LOGIC ---
         function startRomanticExperience() {
-            // Attempt to play music
-            try {
-                music.volume = 0.5; // Soft volume
-                music.play().catch(e => console.log("Audio requires interaction"));
-            } catch(e) {}
-
-            // Fade out intro
+            try { music.volume = 0.5; music.play(); } catch(e) {}
             intro.style.opacity = '0';
             setTimeout(() => {
                 intro.style.display = 'none';
-                // Fade in Card
                 card.style.display = 'block';
-                // Trigger reflow
                 void card.offsetWidth;
                 card.style.opacity = '1';
                 card.style.transform = 'scale(1)';
             }, 1000);
         }
 
-        // --- 3. THE "NO" BUTTON (GENTLE EVASION) ---
         function moveNo() {
             noClicks++;
-            
-            // Text feedback
             const phrases = ["Are you sure?", "Look again...", "Over here...", "Try Yes...", "Please?"];
             noBtn.innerText = phrases[noClicks % phrases.length];
-
-            // Calculate new position
-            // We use a smaller range so it doesn't fly off screen too aggressively
             const x = (Math.random() - 0.5) * 250;
             const y = (Math.random() - 0.5) * 250;
-
             noBtn.style.transform = `translate(${x}px, ${y}px)`;
             
-            // If she persists, trigger "Love Rain" (The Swarm)
             if(noClicks > 4) {
                 spawnLoveRain();
+                setTimeout(spawnLoveRain, 100);
+                setTimeout(spawnLoveRain, 200);
             }
         }
 
-        // --- 4. LOVE RAIN (FALLING YES BUTTONS) ---
         function spawnLoveRain() {
             const btn = document.createElement('div');
             btn.classList.add('falling-yes');
             btn.innerText = "YES ❤";
             btn.style.left = Math.random() * 90 + 'vw';
-            // Randomize fall speed (slow)
-            btn.style.animationDuration = (Math.random() * 3 + 5) + 's';
-            
-            btn.onclick = sheSaidYes; // Any floating button works
+            btn.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            btn.onclick = sheSaidYes;
             document.body.appendChild(btn);
-
-            // Remove after animation
-            setTimeout(() => btn.remove(), 8000);
+            setTimeout(() => btn.remove(), 5000);
         }
 
-        // --- 5. SUCCESS ---
         function sheSaidYes() {
-            // Fade out card
+            const fallingButtons = document.querySelectorAll('.falling-yes');
+            fallingButtons.forEach(b => b.remove());
+
             card.style.transition = "all 1s ease";
             card.style.opacity = "0";
             card.style.transform = "scale(1.1)";
             
             setTimeout(() => {
                 card.style.display = 'none';
-                document.getElementById('success-msg').style.display = 'block';
+                successMsg.style.display = 'block';
                 
-                // Intensify Particles for celebration
                 setInterval(() => {
                     const p = document.createElement('div');
                     p.classList.add('floating-heart');
                     p.innerHTML = '💖';
                     p.style.left = Math.random() * 100 + 'vw';
-                    p.style.animationDuration = '5s'; // Faster for celebration
-                    p.style.opacity = '0.9';
+                    p.style.animationDuration = '5s'; 
+                    p.style.opacity = '0.9'; 
+                    p.style.textShadow = "0 0 10px rgba(255, 192, 203, 1)";
                     p.style.fontSize = '30px';
                     particleContainer.appendChild(p);
                     setTimeout(() => p.remove(), 5000);
                 }, 100);
+            }, 1000);
+        }
 
+        function showSchedule() {
+            successMsg.style.opacity = '0';
+            successMsg.style.transition = 'opacity 1s';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+                scheduleScreen.style.display = 'flex';
+                void scheduleScreen.offsetWidth;
+                scheduleScreen.style.opacity = '1';
+                scheduleScreen.style.transform = 'translateY(0)';
+                
+                const items = document.querySelectorAll('.day-item');
+                items.forEach(item => {
+                    item.style.animation = "slideInRight 0.5s ease forwards";
+                    item.style.animationDelay = item.style.animationDelay;
+                });
             }, 1000);
         }
     </script>
