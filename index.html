@@ -13,86 +13,60 @@
             margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
             background: #1a0b2e; font-family: 'Quicksand', sans-serif;
             display: flex; justify-content: center; align-items: center; color: white;
+            cursor: none; /* Hide default cursor */
         }
 
-        /* --- LYRIC STAGE (NEW) --- */
-        #lyrics-overlay {
-            position: fixed;
-            top: 8%; /* Positioned near top */
-            width: 100%;
-            text-align: center;
-            z-index: 1000; /* Above everything */
-            pointer-events: none; /* Allows clicking through it */
-            padding: 0 20px;
+        /* --- CUSTOM CURSOR --- */
+        #custom-cursor {
+            position: fixed; top: 0; left: 0;
+            font-size: 24px; pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%); transition: transform 0.1s ease;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
         }
-
-        #lyric-line {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
-            line-height: 1.2;
-            color: #ffc3a0;
-            text-shadow: 0 0 15px rgba(255, 195, 160, 0.6), 0 0 5px rgba(255, 255, 255, 0.4);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+        .cursor-trail {
+            position: fixed; pointer-events: none; font-size: 16px;
+            animation: fadeTrail 1s linear forwards; z-index: 99998;
         }
-
-        .lyric-visible {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
+        @keyframes fadeTrail {
+            0% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+            100% { opacity: 0; transform: scale(0.5) translate(-50%, -100%); }
         }
 
         /* --- BACKGROUND EFFECTS --- */
-        .vignette {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 40%, #000000 150%);
-            z-index: 1; pointer-events: none;
-        }
-
-        .gradient-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(120deg, #1c0146, #ff208f, #2b1055);
-            background-size: 300% 300%;
-            animation: deepBreath 30s ease infinite;
-            z-index: -2;
-        }
+        .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 40%, #000000 150%); z-index: 1; pointer-events: none; }
+        .gradient-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(120deg, #1c0146, #ff208f, #2b1055); background-size: 300% 300%; animation: deepBreath 30s ease infinite; z-index: -2; }
         @keyframes deepBreath { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .floating-heart {
-            position: absolute; color: rgba(255, 255, 255, 0.1); font-size: 1.5rem;
-            animation: floatUp linear forwards; pointer-events: none; z-index: 0;
+        .floating-heart { position: absolute; color: rgba(255, 255, 255, 0.1); font-size: 1.5rem; animation: floatUp linear forwards; pointer-events: none; z-index: 0; }
+        @keyframes floatUp { from { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 90% { opacity: 0.3; } to { transform: translateY(-10vh) rotate(20deg); opacity: 0; } }
+
+        /* --- LYRIC STAGE --- */
+        #lyrics-overlay { position: fixed; top: 8%; width: 100%; text-align: center; z-index: 1000; pointer-events: none; padding: 0 20px; }
+        #lyric-line {
+            font-family: 'Dancing Script', cursive; font-size: 1.8rem; line-height: 1.2;
+            color: #ffc3a0; text-shadow: 0 0 15px rgba(255, 195, 160, 0.6), 0 0 5px rgba(255, 255, 255, 0.4);
+            opacity: 0; transform: translateY(10px); transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        @keyframes floatUp {
-            from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; } 90% { opacity: 0.3; }
-            to { transform: translateY(-10vh) rotate(20deg); opacity: 0; }
-        }
+        .lyric-visible { opacity: 1 !important; transform: translateY(0) !important; }
 
         /* --- CARDS & UI --- */
-        #intro-screen { z-index: 100; text-align: center; cursor: pointer; transition: opacity 1.5s ease; }
+        #intro-screen { z-index: 100; text-align: center; cursor: none; transition: opacity 1.5s ease; }
         .envelope-icon { font-size: 6rem; animation: gentleBeat 3s infinite ease-in-out; filter: drop-shadow(0 0 30px rgba(255, 192, 203, 0.4)); }
         .tap-text { margin-top: 15px; font-size: 1.2rem; letter-spacing: 2px; opacity: 0.7; animation: fadeInOut 4s infinite; }
 
-        .glass-card {
-            position: relative; background: rgba(20, 20, 30, 0.3);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); text-align: center;
-            border-radius: 40px; z-index: 10;
-        }
-
+        .glass-card { position: relative; background: rgba(20, 20, 30, 0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); text-align: center; border-radius: 40px; z-index: 10; }
         #main-card { padding: 50px 40px; width: 420px; max-width: 85%; transform: scale(0.9); opacity: 0; transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1); display: none; }
         
         h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; margin: 0 0 30px 0; background: linear-gradient(to right, #fff, #ffc3a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; }
         .mascot-area { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
 
         .btn-container { position: relative; height: 100px; display: flex; justify-content: center; align-items: center; }
-        button { border: none; padding: 15px 45px; border-radius: 50px; font-size: 1.2rem; cursor: pointer; transition: all 0.5s ease; font-family: 'Quicksand', sans-serif; font-weight: bold; letter-spacing: 1px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        button { border: none; padding: 15px 45px; border-radius: 50px; font-size: 1.2rem; cursor: none; transition: all 0.5s ease; font-family: 'Quicksand', sans-serif; font-weight: bold; letter-spacing: 1px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
         #yesBtn { background: #fff; color: #2b1055; z-index: 5; }
         #yesBtn:hover { transform: scale(1.05); background: #ffc3a0; box-shadow: 0 0 30px rgba(255, 195, 160, 0.6); }
         #noBtn { position: absolute; background: transparent; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); transform: translateX(80px); }
 
-        .falling-yes { position: fixed; background: #fff; color: #ff007f; padding: 10px 25px; border-radius: 30px; font-size: 1.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); pointer-events: auto; cursor: pointer; animation: rainFall 4s linear forwards; z-index: 9999; white-space: nowrap; }
+        .falling-yes { position: fixed; background: #fff; color: #ff007f; padding: 10px 25px; border-radius: 30px; font-size: 1.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); pointer-events: auto; cursor: none; animation: rainFall 4s linear forwards; z-index: 9999; white-space: nowrap; }
         .falling-yes:hover { background: #ffc3a0; transform: scale(1.1); }
         @keyframes rainFall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(20deg); opacity: 0; } }
 
@@ -102,16 +76,80 @@
         .next-btn:hover { background: white; color: #2b1055; }
 
         #schedule-screen { display: none; width: 90%; max-width: 450px; height: 70vh; padding: 30px; opacity: 0; transform: translateY(20px); transition: all 1s ease; flex-direction: column; }
-        .scroll-area { overflow-y: auto; height: 100%; padding-right: 10px; margin-top: 20px; } /* Added margin for lyrics space */
+        .scroll-area { overflow-y: auto; height: 100%; padding-right: 10px; margin-top: 20px; }
         .scroll-area::-webkit-scrollbar { width: 5px; }
         .scroll-area::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
         .scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
-        .day-item { background: rgba(255, 255, 255, 0.05); margin-bottom: 15px; padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; opacity: 0; transform: translateX(-20px); }
+        .day-item { background: rgba(255, 255, 255, 0.05); margin-bottom: 15px; padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; opacity: 0; transform: translateX(-20px); cursor: none; }
         .day-item:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.02); }
         .day-date { font-weight: bold; color: #ffc3a0; font-size: 0.9rem; min-width: 50px; }
         .day-title { font-size: 1.1rem; font-weight: 500; }
         .day-icon { font-size: 1.5rem; }
 
+        /* ========================================= */
+        /* --- THE DARK HUNT (NEW MECHANICS) --- */
+        /* ========================================= */
+        
+        #hunt-layer {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: black; z-index: 5000;
+            /* The spotlight effect is handled via JS mousemove */
+            cursor: none;
+        }
+
+        .hidden-rose {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0; /* Invisible initially */
+            transition: opacity 0.3s ease, transform 0.3s;
+            cursor: none;
+            filter: drop-shadow(0 0 10px red);
+            z-index: 5001;
+        }
+
+        .firefly {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #ffeb3b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffeb3b;
+            animation: fly 10s infinite linear;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        @keyframes fly {
+            0% { transform: translate(0,0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(100px, -100px); opacity: 0; }
+        }
+
+        /* THE REVEAL MODAL */
+        #reveal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 0, 10, 0.95);
+            z-index: 6000;
+            justify-content: center; align-items: center; flex-direction: column;
+            animation: fadeIn 2s;
+        }
+
+        #final-letter {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #ffc3a0;
+            text-align: center;
+            line-height: 1.6;
+            max-width: 80%;
+            text-shadow: 0 0 20px rgba(255, 100, 100, 0.5);
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 50px rgba(255, 0, 80, 0.2);
+        }
+
+        /* Animations */
         @keyframes gentleBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         @keyframes fadeInOut { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -125,6 +163,18 @@
     <audio id="bg-music" loop>
         <source src="loveMe.mpeg" type="audio/mpeg">
     </audio>
+
+    <div id="custom-cursor">❤️</div>
+
+    <div id="hunt-layer">
+        <div id="hunt-instruction" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:rgba(255,255,255,0.3); pointer-events:none;">
+            Find the rose in the dark...
+        </div>
+    </div>
+
+    <div id="reveal-overlay" onclick="closeReveal()">
+        <div style="font-size: 5rem; margin-bottom: 20px; animation: gentleBeat 2s infinite;">🌹</div>
+        <div id="final-letter"></div> </div>
 
     <div id="lyrics-overlay">
         <div id="lyric-line"></div>
@@ -158,7 +208,11 @@
     <div class="glass-card" id="schedule-screen">
         <h2 style="font-family:'Dancing Script',cursive; font-size:2.5rem; margin-top:0;">Our Week of Love</h2>
         <div class="scroll-area">
-            <div class="day-item" style="animation-delay: 0.1s"><div class="day-icon">🌹</div><div><div class="day-date">Feb 7</div><div class="day-title">Rose Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.1s" onclick="startTreasureHunt()">
+                <div class="day-icon">🌹</div>
+                <div><div class="day-date">Feb 7</div><div class="day-title">Rose Day</div></div>
+            </div>
+            
             <div class="day-item" style="animation-delay: 0.2s"><div class="day-icon">💍</div><div><div class="day-date">Feb 8</div><div class="day-title">Propose Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.3s"><div class="day-icon">♥️</div><div><div class="day-date">Feb 9</div><div class="day-title">Syrup Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.4s"><div class="day-icon">🧸</div><div><div class="day-date">Feb 10</div><div class="day-title">Teddy Day</div></div></div>
@@ -179,40 +233,48 @@
         const noBtn = document.getElementById('noBtn');
         const music = document.getElementById('bg-music');
         const lyricLine = document.getElementById('lyric-line');
+        const cursor = document.getElementById('custom-cursor');
+        
         let noClicks = 0;
 
+        // --- CUSTOM MOUSE CURSOR ---
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            if (Math.random() < 0.3) { 
+                const trail = document.createElement('div');
+                trail.classList.add('cursor-trail');
+                trail.innerHTML = '✨';
+                trail.style.left = e.clientX + 'px';
+                trail.style.top = e.clientY + 'px';
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 1000);
+            }
+        });
+
         // --- LYRIC SYNC ENGINE ---
-        // I have estimated these timestamps based on the song flow.
-        // YOU MUST TWEAK THESE NUMBERS to match your specific MP3 file.
         const lyrics = [
             { time: 17, text: "My friends say I'm a fool to think that you're the one for me" },
             { time: 21, text: "I guess I'm just a sucker for love" },
             { time: 25, text: "'Cause honestly the truth is that you know I'm never leaving" },
             { time: 29, text: "'Cause you're my angel sent from above" },
-            
             { time: 33, text: "Baby you can do no wrong, my money is yours" },
             { time: 37, text: "Give you little more because I love ya, love ya" },
             { time: 40, text: "With me, girl, is where you belong, just stay right here" },
             { time: 44, text: "I promise my dear I'll put nothing above ya, above ya" },
-            
-            // Chorus
             { time: 48, text: "Love me, love me, say that you love me" },
             { time: 52, text: "Fool me, fool me, oh how you do me" },
             { time: 56, text: "Kiss me, kiss me, say that you miss me" },
             { time: 60, text: "Tell me what I want to hear, tell me you love me" },
-            
             { time: 63, text: "Love me, love me, say that you love me" },
             { time: 68, text: "Fool me, fool me, oh how you do me" },
             { time: 71, text: "Kiss me, kiss me, say that you miss me" },
             { time: 75, text: "Tell me what I want to hear, tell me you love me" },
-
-            // Verse 2
             { time: 79, text: "People try to tell me but I still refuse to listen" },
             { time: 82, text: "'Cause they don't get to spend time with you" },
             { time: 86, text: "A minute with you is worth more than..." },
             { time: 89, text: "A thousand days without your love, oh your love" },
-
-            // Chorus Repeats (Approximation)
             { time: 94, text: "Baby you can do no wrong, my money is yours" },
             { time: 98, text: "Give you little more because I love ya, love ya" },
             { time: 102, text: "With me, girl, is where you belong, just stay right here" },
@@ -239,34 +301,24 @@
             { time: 183, text: "Tell me what I want to hear, tell me you love me" },
         ];
 
-        // This runs 4 times a second to check the time
         music.addEventListener('timeupdate', () => {
             const currentTime = music.currentTime;
-            
-            // Find the lyric that matches the current time
             const currentLyric = lyrics.find((line, index) => {
                 const nextLine = lyrics[index + 1];
                 return currentTime >= line.time && (!nextLine || currentTime < nextLine.time);
             });
-
             if (currentLyric) {
-                // Only update if the text is different (prevents flickering)
                 if (lyricLine.innerText !== currentLyric.text) {
-                    // Fade out
                     lyricLine.classList.remove('lyric-visible');
-                    
                     setTimeout(() => {
                         lyricLine.innerText = currentLyric.text;
-                        // Fade in
                         lyricLine.classList.add('lyric-visible');
-                    }, 300); // Wait for fade out to finish
+                    }, 300);
                 }
             } else {
-                // If no lyric matches (intro or outro), hide the line
                 lyricLine.classList.remove('lyric-visible');
             }
         });
-
 
         // --- PARTICLES ---
         function createParticles() {
@@ -283,7 +335,7 @@
         }
         createParticles();
 
-        // --- BUTTON LOGIC ---
+        // --- CORE NAVIGATION ---
         function startRomanticExperience() {
             try { music.volume = 0.5; music.play(); } catch(e) {}
             intro.style.opacity = '0';
@@ -303,7 +355,6 @@
             const x = (Math.random() - 0.5) * 250;
             const y = (Math.random() - 0.5) * 250;
             noBtn.style.transform = `translate(${x}px, ${y}px)`;
-            
             if(noClicks > 4) {
                 spawnLoveRain();
                 setTimeout(spawnLoveRain, 100);
@@ -325,19 +376,16 @@
         function sheSaidYes() {
             const fallingButtons = document.querySelectorAll('.falling-yes');
             fallingButtons.forEach(b => b.remove());
-
             card.style.transition = "all 1s ease";
             card.style.opacity = "0";
             card.style.transform = "scale(1.1)";
-            
             setTimeout(() => {
                 card.style.display = 'none';
                 successMsg.style.display = 'block';
-                
                 setInterval(() => {
                     const p = document.createElement('div');
                     p.classList.add('floating-heart');
-                    p.innerHTML = '💖';
+                    p.innerHTML = '✨';
                     p.style.left = Math.random() * 100 + 'vw';
                     p.style.animationDuration = '5s'; 
                     p.style.opacity = '0.9'; 
@@ -352,14 +400,12 @@
         function showSchedule() {
             successMsg.style.opacity = '0';
             successMsg.style.transition = 'opacity 1s';
-            
             setTimeout(() => {
                 successMsg.style.display = 'none';
                 scheduleScreen.style.display = 'flex';
                 void scheduleScreen.offsetWidth;
                 scheduleScreen.style.opacity = '1';
                 scheduleScreen.style.transform = 'translateY(0)';
-                
                 const items = document.querySelectorAll('.day-item');
                 items.forEach(item => {
                     item.style.animation = "slideInRight 0.5s ease forwards";
@@ -367,6 +413,124 @@
                 });
             }, 1000);
         }
+
+        // ==========================================
+        // --- TREASURE HUNT LOGIC (THE NEW PART) ---
+        // ==========================================
+
+        const huntLayer = document.getElementById('hunt-layer');
+        let hiddenRose;
+
+        function startTreasureHunt() {
+            // Hide schedule
+            scheduleScreen.style.opacity = '0';
+            setTimeout(() => {
+                scheduleScreen.style.display = 'none';
+                huntLayer.style.display = 'block';
+                initHunt();
+            }, 500);
+        }
+
+        function initHunt() {
+            // Remove old roses if any
+            const oldRoses = document.querySelectorAll('.hidden-rose');
+            oldRoses.forEach(r => r.remove());
+
+            // Create the hidden rose randomly
+            hiddenRose = document.createElement('div');
+            hiddenRose.classList.add('hidden-rose');
+            hiddenRose.innerHTML = '🌹';
+            
+            // Random position (avoid edges)
+            const x = Math.random() * (window.innerWidth - 100) + 50;
+            const y = Math.random() * (window.innerHeight - 100) + 50;
+            hiddenRose.style.left = x + 'px';
+            hiddenRose.style.top = y + 'px';
+            
+            // Click event for the rose
+            hiddenRose.onclick = triggerReveal;
+            
+            huntLayer.appendChild(hiddenRose);
+
+            // Create Fireflies for ambiance
+            for(let i=0; i<15; i++) {
+                const fly = document.createElement('div');
+                fly.classList.add('firefly');
+                fly.style.left = Math.random() * 100 + 'vw';
+                fly.style.top = Math.random() * 100 + 'vh';
+                fly.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                huntLayer.appendChild(fly);
+            }
+
+            // Instructions fade out
+            setTimeout(() => {
+                document.getElementById('hunt-instruction').style.opacity = 0;
+            }, 4000);
+        }
+
+        // Flashlight Effect & Proximity Check
+        huntLayer.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            // Spot light gradient
+            huntLayer.style.background = `radial-gradient(circle 100px at ${x}px ${y}px, transparent 10%, black 100%)`;
+
+            // Check distance to rose
+            if (hiddenRose) {
+                const rect = hiddenRose.getBoundingClientRect();
+                const roseX = rect.left + rect.width / 2;
+                const roseY = rect.top + rect.height / 2;
+                const dist = Math.hypot(x - roseX, y - roseY);
+
+                // Reveal logic: Only visible if VERY close
+                if (dist < 80) {
+                    hiddenRose.style.opacity = 1 - (dist / 80);
+                    hiddenRose.style.transform = `scale(${1 + (1 - dist/80)})`;
+                } else {
+                    hiddenRose.style.opacity = 0;
+                }
+            }
+        });
+
+        // The Grand Reveal
+        function triggerReveal() {
+            huntLayer.style.display = 'none';
+            const overlay = document.getElementById('reveal-overlay');
+            overlay.style.display = 'flex';
+            
+            const message = "My Dearest Krisha,\nJust like this rose was hidden in the dark,\nmy life was dim until I found you.\nYou are the most beautiful flower in my garden.\nHappy Rose Day! 🌹";
+            
+            // Typewriter effect
+            const letterDiv = document.getElementById('final-letter');
+            letterDiv.innerHTML = "";
+            let i = 0;
+            function typeWriter() {
+                if (i < message.length) {
+                    letterDiv.innerHTML += message.charAt(i) === '\n' ? '<br>' : message.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            typeWriter();
+
+            // Falling petals
+            for(let i=0; i<50; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('floating-heart'); // re-using class for simplicity
+                petal.innerHTML = '🌹';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                petal.style.zIndex = 7000;
+                document.body.appendChild(petal);
+            }
+        }
+
+        function closeReveal() {
+            document.getElementById('reveal-overlay').style.display = 'none';
+            // Optionally go back to schedule or end here
+        }
+
     </script>
 </body>
 </html>
