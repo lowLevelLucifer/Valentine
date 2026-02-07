@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For My Valentine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&family=Cinzel:wght@500&display=swap" rel="stylesheet">
     <style>
         /* --- RESET & ATMOSPHERE --- */
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -34,7 +35,7 @@
 
         /* --- BACKGROUND EFFECTS --- */
         .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 40%, #000000 150%); z-index: 1; pointer-events: none; }
-        .gradient-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(120deg, #1c0146, #ff208f, #2b1055); background-size: 300% 300%; animation: deepBreath 30s ease infinite; z-index: -2; }
+        .gradient-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(120deg, #1c0146, #ff208f, #2b1055); background-size: 300% 300%; animation: deepBreath 30s ease infinite; z-index: -2; transition: opacity 2s; }
         @keyframes deepBreath { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .floating-heart { position: absolute; color: rgba(255, 255, 255, 0.1); font-size: 1.5rem; animation: floatUp linear forwards; pointer-events: none; z-index: 0; }
@@ -56,7 +57,6 @@
 
         .glass-card { position: relative; background: rgba(20, 20, 30, 0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); text-align: center; border-radius: 40px; z-index: 10; }
         #main-card { padding: 50px 40px; width: 420px; max-width: 85%; transform: scale(0.9); opacity: 0; transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1); display: none; }
-        
         h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; margin: 0 0 30px 0; background: linear-gradient(to right, #fff, #ffc3a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.2; }
         .mascot-area { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
 
@@ -65,7 +65,6 @@
         #yesBtn { background: #fff; color: #2b1055; z-index: 5; }
         #yesBtn:hover { transform: scale(1.05); background: #ffc3a0; box-shadow: 0 0 30px rgba(255, 195, 160, 0.6); }
         #noBtn { position: absolute; background: transparent; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); transform: translateX(80px); }
-
         .falling-yes { position: fixed; background: #fff; color: #ff007f; padding: 10px 25px; border-radius: 30px; font-size: 1.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); pointer-events: auto; cursor: none; animation: rainFall 4s linear forwards; z-index: 9999; white-space: nowrap; }
         .falling-yes:hover { background: #ffc3a0; transform: scale(1.1); }
         @keyframes rainFall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(20deg); opacity: 0; } }
@@ -86,67 +85,75 @@
         .day-title { font-size: 1.1rem; font-weight: 500; }
         .day-icon { font-size: 1.5rem; }
 
+        /* --- ROSE DAY MODAL --- */
+        #rose-modal, #hunt-layer { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 5000; cursor: none; }
+        #rose-modal { background: rgba(0,0,0,0.9); flex-direction: column; justify-content: center; align-items: center; }
+        .big-rose { font-size: 10rem; animation: bloom 2s ease forwards; filter: drop-shadow(0 0 30px red); cursor: none; }
+        .rose-letter { margin-top: 30px; font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ffc3a0; text-align: center; opacity: 0; max-width: 80%; line-height: 1.5; transition: opacity 2s; }
+        .falling-petal { position: fixed; top: -10%; color: #ff0055; font-size: 20px; z-index: 2001; animation: fallRotate 4s linear infinite; }
+        @keyframes bloom { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fallRotate { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        /* --- ROSE HUNT LAYER --- */
+        .hidden-rose { position: absolute; font-size: 2rem; opacity: 0; transition: opacity 0.3s ease, transform 0.3s; cursor: none; filter: drop-shadow(0 0 10px red); z-index: 5001; }
+        .firefly { position: absolute; width: 4px; height: 4px; background: #ffeb3b; border-radius: 50%; box-shadow: 0 0 10px #ffeb3b; animation: fly 10s infinite linear; pointer-events: none; opacity: 0.6; }
+        @keyframes fly { 0% { transform: translate(0,0); opacity: 0; } 50% { opacity: 1; } 100% { transform: translate(100px, -100px); opacity: 0; } }
+        #reveal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20, 0, 10, 0.95); z-index: 6000; justify-content: center; align-items: center; flex-direction: column; animation: fadeIn 2s; }
+        #final-letter { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ffc3a0; text-align: center; line-height: 1.6; max-width: 80%; text-shadow: 0 0 20px rgba(255, 100, 100, 0.5); border: 2px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; background: rgba(0,0,0,0.5); box-shadow: 0 0 50px rgba(255, 0, 80, 0.2); }
+
+
         /* ========================================= */
-        /* --- THE DARK HUNT (NEW MECHANICS) --- */
+        /* --- PROPOSE DAY STYLES (NEW) --- */
         /* ========================================= */
+        #propose-layer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 7000; overflow: hidden;
+            flex-direction: column; justify-content: center; align-items: center;
+        }
         
-        #hunt-layer {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: black; z-index: 5000;
-            /* The spotlight effect is handled via JS mousemove */
-            cursor: none;
+        /* The Stars for "KRISHA" */
+        #star-container { position: relative; width: 80%; height: 40%; display: flex; justify-content: center; align-items: center; gap: 30px; }
+        .constellation-star {
+            font-size: 2rem; color: rgba(255, 255, 255, 0.3);
+            cursor: none; transition: all 0.5s;
+            position: relative;
+        }
+        .constellation-star::after {
+            content: attr(data-letter);
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            font-family: 'Cinzel', serif; font-size: 3rem; color: white;
+            opacity: 0; transition: opacity 1s; text-shadow: 0 0 20px white;
+        }
+        .star-lit { color: #fff; text-shadow: 0 0 15px #fff, 0 0 30px #ff00ff; animation: pulseStar 1s infinite; }
+        .star-lit::after { opacity: 1; }
+        
+        @keyframes pulseStar { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+        /* The Big Question */
+        #propose-question {
+            margin-top: 30px; font-family: 'Dancing Script', cursive; font-size: 3rem;
+            color: #ffc3a0; opacity: 0; transition: opacity 2s;
+            text-shadow: 0 0 20px rgba(255, 195, 160, 0.8);
         }
 
-        .hidden-rose {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0; /* Invisible initially */
-            transition: opacity 0.3s ease, transform 0.3s;
-            cursor: none;
-            filter: drop-shadow(0 0 10px red);
-            z-index: 5001;
+        /* The Stardust Canvas */
+        #stardust-canvas {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 40%;
+            cursor: crosshair; opacity: 0; transition: opacity 1s;
+        }
+        #stardust-hint {
+            position: absolute; bottom: 10%; width: 100%; text-align: center;
+            font-family: 'Quicksand', sans-serif; font-size: 1.2rem; color: rgba(255,255,255,0.5);
+            pointer-events: none; opacity: 0; transition: opacity 1s;
         }
 
-        .firefly {
-            position: absolute;
-            width: 4px; height: 4px;
-            background: #ffeb3b;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #ffeb3b;
-            animation: fly 10s infinite linear;
-            pointer-events: none;
-            opacity: 0.6;
+        /* Sunrise Mode */
+        .sunrise-mode {
+            background: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important;
         }
-        @keyframes fly {
-            0% { transform: translate(0,0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translate(100px, -100px); opacity: 0; }
-        }
-
-        /* THE REVEAL MODAL */
-        #reveal-overlay {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(20, 0, 10, 0.95);
-            z-index: 6000;
-            justify-content: center; align-items: center; flex-direction: column;
-            animation: fadeIn 2s;
-        }
-
-        #final-letter {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: #ffc3a0;
-            text-align: center;
-            line-height: 1.6;
-            max-width: 80%;
-            text-shadow: 0 0 20px rgba(255, 100, 100, 0.5);
-            border: 2px solid rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 20px;
-            background: rgba(0,0,0,0.5);
-            box-shadow: 0 0 50px rgba(255, 0, 80, 0.2);
+        #final-propose-msg {
+            display: none; font-family: 'Dancing Script', cursive; font-size: 4rem; color: #fff;
+            text-shadow: 0 0 10px rgba(0,0,0,0.2); animation: fadeIn 3s; z-index: 8000;
         }
 
         /* Animations */
@@ -166,20 +173,36 @@
 
     <div id="custom-cursor">❤️</div>
 
-    <div id="hunt-layer">
-        <div id="hunt-instruction" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:rgba(255,255,255,0.3); pointer-events:none;">
-            Find the rose in the dark...
+    <div id="propose-layer">
+        <div id="star-container">
+            <div class="constellation-star" data-letter="K" onclick="lightStar(this, 0)">★</div>
+            <div class="constellation-star" data-letter="R" onclick="lightStar(this, 1)">★</div>
+            <div class="constellation-star" data-letter="I" onclick="lightStar(this, 2)">★</div>
+            <div class="constellation-star" data-letter="S" onclick="lightStar(this, 3)">★</div>
+            <div class="constellation-star" data-letter="H" onclick="lightStar(this, 4)">★</div>
+            <div class="constellation-star" data-letter="A" onclick="lightStar(this, 5)">★</div>
+        </div>
+        
+        <div id="propose-question">Will you be mine forever?</div>
+        
+        <div id="stardust-hint">Sign our destiny (Draw a Heart)</div>
+        <canvas id="stardust-canvas"></canvas>
+        
+        <div id="final-propose-msg">
+            Forever & Always ❤️<br>
+            <span style="font-size:2rem; font-family:'Quicksand'">I promise to love you.</span>
         </div>
     </div>
 
+    <div id="hunt-layer">
+        <div id="hunt-instruction" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:rgba(255,255,255,0.3); pointer-events:none;">Find the rose in the dark...</div>
+    </div>
     <div id="reveal-overlay" onclick="closeReveal()">
         <div style="font-size: 5rem; margin-bottom: 20px; animation: gentleBeat 2s infinite;">🌹</div>
-        <div id="final-letter"></div> </div>
-
-    <div id="lyrics-overlay">
-        <div id="lyric-line"></div>
+        <div id="final-letter"></div>
     </div>
 
+    <div id="lyrics-overlay"><div id="lyric-line"></div></div>
     <div class="vignette"></div>
     <div class="gradient-bg"></div>
     <div id="particle-container"></div>
@@ -208,12 +231,8 @@
     <div class="glass-card" id="schedule-screen">
         <h2 style="font-family:'Dancing Script',cursive; font-size:2.5rem; margin-top:0;">Our Week of Love</h2>
         <div class="scroll-area">
-            <div class="day-item" style="animation-delay: 0.1s" onclick="startTreasureHunt()">
-                <div class="day-icon">🌹</div>
-                <div><div class="day-date">Feb 7</div><div class="day-title">Rose Day</div></div>
-            </div>
-            
-            <div class="day-item" style="animation-delay: 0.2s"><div class="day-icon">💍</div><div><div class="day-date">Feb 8</div><div class="day-title">Propose Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.1s" onclick="startTreasureHunt()"><div class="day-icon">🌹</div><div><div class="day-date">Feb 7</div><div class="day-title">Rose Day (Tap to Play)</div></div></div>
+            <div class="day-item" style="animation-delay: 0.2s" onclick="startProposeDay()"><div class="day-icon">💍</div><div><div class="day-date">Feb 8</div><div class="day-title">Propose Day (Tap to Play)</div></div></div>
             <div class="day-item" style="animation-delay: 0.3s"><div class="day-icon">♥️</div><div><div class="day-date">Feb 9</div><div class="day-title">Syrup Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.4s"><div class="day-icon">🧸</div><div><div class="day-date">Feb 10</div><div class="day-title">Teddy Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.5s"><div class="day-icon">🤝</div><div><div class="day-date">Feb 11</div><div class="day-title">Promise Day</div></div></div>
@@ -224,7 +243,7 @@
     </div>
 
     <script>
-        // --- CONFIGURATION ---
+        // --- CONFIG ---
         const particleContainer = document.getElementById('particle-container');
         const card = document.getElementById('main-card');
         const intro = document.getElementById('intro-screen');
@@ -237,15 +256,14 @@
         
         let noClicks = 0;
 
-        // --- CUSTOM MOUSE CURSOR ---
+        // --- CURSOR ---
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            
             if (Math.random() < 0.3) { 
                 const trail = document.createElement('div');
                 trail.classList.add('cursor-trail');
-                trail.innerHTML = '✨';
+                trail.innerHTML = '💖';
                 trail.style.left = e.clientX + 'px';
                 trail.style.top = e.clientY + 'px';
                 document.body.appendChild(trail);
@@ -253,7 +271,7 @@
             }
         });
 
-        // --- LYRIC SYNC ENGINE ---
+        // --- LYRICS ---
         const lyrics = [
             { time: 17, text: "My friends say I'm a fool to think that you're the one for me" },
             { time: 21, text: "I guess I'm just a sucker for love" },
@@ -320,7 +338,7 @@
             }
         });
 
-        // --- PARTICLES ---
+        // --- GENERAL FUNCTIONS ---
         function createParticles() {
             setInterval(() => {
                 const p = document.createElement('div');
@@ -335,7 +353,6 @@
         }
         createParticles();
 
-        // --- CORE NAVIGATION ---
         function startRomanticExperience() {
             try { music.volume = 0.5; music.play(); } catch(e) {}
             intro.style.opacity = '0';
@@ -364,8 +381,7 @@
 
         function spawnLoveRain() {
             const btn = document.createElement('div');
-            btn.classList.add('falling-yes');
-            btn.innerText = "YES ❤";
+            btn.classList.add('falling-yes'); btn.innerText = "YES ❤";
             btn.style.left = Math.random() * 90 + 'vw';
             btn.style.animationDuration = (Math.random() * 2 + 3) + 's';
             btn.onclick = sheSaidYes;
@@ -385,10 +401,8 @@
                 setInterval(() => {
                     const p = document.createElement('div');
                     p.classList.add('floating-heart');
-                    p.innerHTML = '✨';
-                    p.style.left = Math.random() * 100 + 'vw';
-                    p.style.animationDuration = '5s'; 
-                    p.style.opacity = '0.9'; 
+                    p.innerHTML = '💖'; p.style.left = Math.random() * 100 + 'vw';
+                    p.style.animationDuration = '5s'; p.style.opacity = '0.9'; 
                     p.style.textShadow = "0 0 10px rgba(255, 192, 203, 1)";
                     p.style.fontSize = '30px';
                     particleContainer.appendChild(p);
@@ -414,15 +428,11 @@
             }, 1000);
         }
 
-        // ==========================================
-        // --- TREASURE HUNT LOGIC (THE NEW PART) ---
-        // ==========================================
-
+        // --- ROSE DAY LOGIC ---
         const huntLayer = document.getElementById('hunt-layer');
         let hiddenRose;
 
         function startTreasureHunt() {
-            // Hide schedule
             scheduleScreen.style.opacity = '0';
             setTimeout(() => {
                 scheduleScreen.style.display = 'none';
@@ -432,27 +442,17 @@
         }
 
         function initHunt() {
-            // Remove old roses if any
             const oldRoses = document.querySelectorAll('.hidden-rose');
             oldRoses.forEach(r => r.remove());
-
-            // Create the hidden rose randomly
             hiddenRose = document.createElement('div');
             hiddenRose.classList.add('hidden-rose');
             hiddenRose.innerHTML = '🌹';
-            
-            // Random position (avoid edges)
             const x = Math.random() * (window.innerWidth - 100) + 50;
             const y = Math.random() * (window.innerHeight - 100) + 50;
-            hiddenRose.style.left = x + 'px';
-            hiddenRose.style.top = y + 'px';
-            
-            // Click event for the rose
+            hiddenRose.style.left = x + 'px'; hiddenRose.style.top = y + 'px';
             hiddenRose.onclick = triggerReveal;
-            
             huntLayer.appendChild(hiddenRose);
 
-            // Create Fireflies for ambiance
             for(let i=0; i<15; i++) {
                 const fly = document.createElement('div');
                 fly.classList.add('firefly');
@@ -461,29 +461,15 @@
                 fly.style.animationDuration = (Math.random() * 5 + 5) + 's';
                 huntLayer.appendChild(fly);
             }
-
-            // Instructions fade out
-            setTimeout(() => {
-                document.getElementById('hunt-instruction').style.opacity = 0;
-            }, 4000);
+            setTimeout(() => { document.getElementById('hunt-instruction').style.opacity = 0; }, 4000);
         }
 
-        // Flashlight Effect & Proximity Check
         huntLayer.addEventListener('mousemove', (e) => {
-            const x = e.clientX;
-            const y = e.clientY;
-            
-            // Spot light gradient
+            const x = e.clientX; const y = e.clientY;
             huntLayer.style.background = `radial-gradient(circle 100px at ${x}px ${y}px, transparent 10%, black 100%)`;
-
-            // Check distance to rose
             if (hiddenRose) {
                 const rect = hiddenRose.getBoundingClientRect();
-                const roseX = rect.left + rect.width / 2;
-                const roseY = rect.top + rect.height / 2;
-                const dist = Math.hypot(x - roseX, y - roseY);
-
-                // Reveal logic: Only visible if VERY close
+                const dist = Math.hypot(x - (rect.left + rect.width/2), y - (rect.top + rect.height/2));
                 if (dist < 80) {
                     hiddenRose.style.opacity = 1 - (dist / 80);
                     hiddenRose.style.transform = `scale(${1 + (1 - dist/80)})`;
@@ -493,31 +479,24 @@
             }
         });
 
-        // The Grand Reveal
         function triggerReveal() {
             huntLayer.style.display = 'none';
             const overlay = document.getElementById('reveal-overlay');
             overlay.style.display = 'flex';
-            
             const message = "My Dearest Krisha,\nJust like this rose was hidden in the dark,\nmy life was dim until I found you.\nYou are the most beautiful flower in my garden.\nHappy Rose Day! 🌹";
-            
-            // Typewriter effect
             const letterDiv = document.getElementById('final-letter');
             letterDiv.innerHTML = "";
             let i = 0;
             function typeWriter() {
                 if (i < message.length) {
                     letterDiv.innerHTML += message.charAt(i) === '\n' ? '<br>' : message.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 50);
+                    i++; setTimeout(typeWriter, 50);
                 }
             }
             typeWriter();
-
-            // Falling petals
             for(let i=0; i<50; i++) {
                 const petal = document.createElement('div');
-                petal.classList.add('floating-heart'); // re-using class for simplicity
+                petal.classList.add('floating-heart');
                 petal.innerHTML = '🌹';
                 petal.style.left = Math.random() * 100 + 'vw';
                 petal.style.animationDuration = (Math.random() * 2 + 2) + 's';
@@ -525,10 +504,109 @@
                 document.body.appendChild(petal);
             }
         }
+        function closeReveal() { document.getElementById('reveal-overlay').style.display = 'none'; }
+// =========================================
+        // --- PROPOSE DAY LOGIC (NEW) ---
+        // =========================================
+        
+        let starsLit = 0;
+        let isDrawing = false;
+        let drawnPoints = 0;
 
-        function closeReveal() {
-            document.getElementById('reveal-overlay').style.display = 'none';
-            // Optionally go back to schedule or end here
+        function startProposeDay() {
+            scheduleScreen.style.opacity = '0';
+            setTimeout(() => {
+                scheduleScreen.style.display = 'none';
+                document.getElementById('propose-layer').style.display = 'flex';
+            }, 500);
+        }
+
+        function lightStar(el, index) {
+            if (el.classList.contains('star-lit')) return;
+            el.classList.add('star-lit');
+            starsLit++;
+            
+            // Check if all stars (KRISHA) are lit
+            if (starsLit === 6) {
+                setTimeout(() => {
+                    document.getElementById('propose-question').style.opacity = '1';
+                    
+                    // Reveal Drawing Canvas after question
+                    setTimeout(() => {
+                        const canvas = document.getElementById('stardust-canvas');
+                        const hint = document.getElementById('stardust-hint');
+                        canvas.style.opacity = '1';
+                        hint.style.opacity = '1';
+                        initStardust(canvas);
+                    }, 2000);
+                }, 1000);
+            }
+        }
+
+        function initStardust(canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight * 0.4;
+            
+            // Mouse/Touch Events
+            const startDraw = () => { isDrawing = true; };
+            const stopDraw = () => { 
+                isDrawing = false; 
+                // Check if enough is drawn to trigger success
+                if(drawnPoints > 50) triggerProposeSuccess();
+            };
+            const draw = (e) => {
+                if(!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                
+                // Draw Glowing Particle
+                ctx.beginPath();
+                ctx.arc(x, y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${Math.random()*60 + 20}, 100%, 70%)`; // Gold/Warm colors
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'white';
+                ctx.fill();
+                
+                drawnPoints++;
+            };
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('touchstart', startDraw);
+            
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('touchend', stopDraw);
+            
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('touchmove', draw);
+        }
+
+        function triggerProposeSuccess() {
+            // Ignite!
+            const layer = document.getElementById('propose-layer');
+            layer.classList.add('sunrise-mode');
+            
+            // Hide previous elements
+            document.getElementById('star-container').style.display = 'none';
+            document.getElementById('propose-question').style.display = 'none';
+            document.getElementById('stardust-canvas').style.display = 'none';
+            document.getElementById('stardust-hint').style.display = 'none';
+
+            // Show Final Message
+            document.getElementById('final-propose-msg').style.display = 'block';
+            
+            // Big Particle Explosion
+            for(let i=0; i<100; i++) {
+                const p = document.createElement('div');
+                p.classList.add('floating-heart');
+                p.innerHTML = '✨';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = '100vh';
+                p.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                p.style.zIndex = 9000;
+                document.body.appendChild(p);
+            }
         }
 
     </script>
