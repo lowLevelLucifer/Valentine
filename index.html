@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +13,7 @@
             margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
             background: #1a0b2e; font-family: 'Quicksand', sans-serif;
             display: flex; justify-content: center; align-items: center; color: white;
-            cursor: none; /* Hide default cursor */
+            cursor: none;
         }
 
         /* --- CUSTOM CURSOR --- */
@@ -85,6 +84,14 @@
         .day-title { font-size: 1.1rem; font-weight: 500; }
         .day-icon { font-size: 1.5rem; }
 
+        .back-btn {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
+            color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem;
+            cursor: none; z-index: 9999;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+
         /* --- ROSE DAY MODAL --- */
         #rose-modal, #hunt-layer { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 5000; cursor: none; }
         #rose-modal { background: rgba(0,0,0,0.9); flex-direction: column; justify-content: center; align-items: center; }
@@ -102,16 +109,12 @@
         #final-letter { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ffc3a0; text-align: center; line-height: 1.6; max-width: 80%; text-shadow: 0 0 20px rgba(255, 100, 100, 0.5); border: 2px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; background: rgba(0,0,0,0.5); box-shadow: 0 0 50px rgba(255, 0, 80, 0.2); }
 
 
-        /* ========================================= */
-        /* --- PROPOSE DAY STYLES (NEW) --- */
-        /* ========================================= */
+        /* --- PROPOSE DAY STYLES --- */
         #propose-layer {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: black; z-index: 7000; overflow: hidden;
             flex-direction: column; justify-content: center; align-items: center;
         }
-        
-        /* The Stars for "KRISHA" */
         #star-container { position: relative; width: 80%; height: 40%; display: flex; justify-content: center; align-items: center; gap: 30px; }
         .constellation-star {
             font-size: 2rem; color: rgba(255, 255, 255, 0.3);
@@ -126,17 +129,13 @@
         }
         .star-lit { color: #fff; text-shadow: 0 0 15px #fff, 0 0 30px #ff00ff; animation: pulseStar 1s infinite; }
         .star-lit::after { opacity: 1; }
-        
         @keyframes pulseStar { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
-        /* The Big Question */
         #propose-question {
             margin-top: 30px; font-family: 'Dancing Script', cursive; font-size: 3rem;
             color: #ffc3a0; opacity: 0; transition: opacity 2s;
             text-shadow: 0 0 20px rgba(255, 195, 160, 0.8);
         }
-
-        /* The Stardust Canvas */
         #stardust-canvas {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 40%;
             cursor: crosshair; opacity: 0; transition: opacity 1s;
@@ -146,14 +145,100 @@
             font-family: 'Quicksand', sans-serif; font-size: 1.2rem; color: rgba(255,255,255,0.5);
             pointer-events: none; opacity: 0; transition: opacity 1s;
         }
+        .sunrise-mode { background: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important; }
+        #final-propose-msg { display: none; font-family: 'Dancing Script', cursive; font-size: 4rem; color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.2); animation: fadeIn 3s; z-index: 8000; }
 
-        /* Sunrise Mode */
-        .sunrise-mode {
-            background: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important;
+        /* ========================================= */
+        /* --- CHOCOLATE DAY STYLES (REDUX) --- */
+        /* ========================================= */
+        #chocolate-layer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #2b1d1a; z-index: 7000;
+            flex-direction: column; justify-content: center; align-items: center;
+            overflow: hidden;
         }
-        #final-propose-msg {
-            display: none; font-family: 'Dancing Script', cursive; font-size: 4rem; color: #fff;
-            text-shadow: 0 0 10px rgba(0,0,0,0.2); animation: fadeIn 3s; z-index: 8000;
+
+        /* 1. Raining Chocolate & Bottom Wave */
+        .choco-drop { position: absolute; font-size: 2rem; opacity: 0.7; z-index: 7001; animation: fallRotate 5s linear forwards; pointer-events: none; }
+        
+        .choco-wave {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 150px;
+            background: #4e342e; border-radius: 50% 50% 0 0;
+            transform: scaleX(1.5); animation: riseWave 8s infinite linear alternate;
+            z-index: 7001; box-shadow: inset 0 20px 20px rgba(0,0,0,0.3);
+        }
+        @keyframes riseWave { 0% { height: 100px; } 100% { height: 160px; } }
+
+        /* 2. Dripping from Top */
+        .drip-container { position: absolute; top: 0; left: 0; width: 100%; display: flex; height: 50px; z-index: 7002; }
+        .drip {
+            flex: 1; background: #3e2723; border-radius: 0 0 50px 50px;
+            animation: dripAnim 3s infinite alternate ease-in-out;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);
+        }
+        @keyframes dripAnim { 0% { transform: scaleY(0.5); } 100% { transform: scaleY(1.5); } }
+
+        /* 3. The Circular Container */
+        #choco-container {
+            position: relative; width: 350px; height: 350px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            z-index: 7005;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        /* Fixed Jitter: Use CSS 'scale' property instead of 'transform' for hover */
+        .choco-item {
+            position: absolute; width: 70px; height: 70px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; cursor: none; 
+            transition: scale 0.3s ease, filter 0.3s, opacity 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            scale: 1; /* Independent of Transform */
+        }
+        .choco-item:hover { scale: 1.15; z-index: 10; }
+        .choco-item.eaten { opacity: 0.3; filter: grayscale(100%); pointer-events: none; }
+
+        /* Radial Positioning remains clean */
+        .choco-dark { background: #3e2723; border: 2px solid #5d4037; transform: rotate(0deg) translate(130px) rotate(0deg); }
+        .choco-milk { background: #795548; border: 2px solid #a1887f; transform: rotate(60deg) translate(130px) rotate(-60deg); }
+        .choco-white { background: #f5f5f5; border: 2px solid #e0e0e0; transform: rotate(120deg) translate(130px) rotate(-120deg); }
+        .choco-caramel { background: #d7ccc8; border: 2px solid #ffcc80; transform: rotate(180deg) translate(130px) rotate(-180deg); }
+        .choco-truffle { background: #4e342e; border: 2px solid gold; transform: rotate(240deg) translate(130px) rotate(-240deg); }
+        .choco-hazel { background: #8d6e63; border: 2px solid #bcaaa4; transform: rotate(300deg) translate(130px) rotate(-300deg); }
+
+        /* 4. The Liquid Pink Fill Heart */
+        .choco-heart { 
+            width: 100px; height: 100px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2);
+            color: white; z-index: 5; opacity: 0.8; pointer-events: none;
+            overflow: hidden; position: relative;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            transition: border-color 0.5s, box-shadow 0.5s;
+        }
+        
+        /* The Pink Liquid */
+        .choco-heart::before {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: var(--fill-level, 0%);
+            background: rgba(255, 0, 85, 0.85); /* Bright Pink */
+            transition: height 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            z-index: -1;
+        }
+        
+        .choco-heart span { z-index: 2; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+        .heart-unlocked { 
+            pointer-events: auto !important; opacity: 1; border-color: #ff0055;
+            box-shadow: 0 0 30px #ff0055, inset 0 0 20px rgba(255,0,85,0.5);
+            animation: pulseBtn 2s infinite; cursor: none;
+        }
+
+        #choco-msg-display {
+            margin-top: 40px; min-height: 60px; text-align: center; z-index: 7005;
+            font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ffccbc;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8); opacity: 0; transition: opacity 0.5s;
+            max-width: 80%; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px;
         }
 
         /* Animations */
@@ -174,30 +259,53 @@
     <div id="custom-cursor">❤️</div>
 
     <div id="propose-layer">
+        <button class="back-btn" onclick="goBackToSchedule('propose')">← Back to Calendar</button>
         <div id="star-container">
-            <div class="constellation-star" data-letter="K" onclick="lightStar(this, 0)">★</div>
-            <div class="constellation-star" data-letter="R" onclick="lightStar(this, 1)">★</div>
-            <div class="constellation-star" data-letter="I" onclick="lightStar(this, 2)">★</div>
-            <div class="constellation-star" data-letter="S" onclick="lightStar(this, 3)">★</div>
-            <div class="constellation-star" data-letter="H" onclick="lightStar(this, 4)">★</div>
-            <div class="constellation-star" data-letter="A" onclick="lightStar(this, 5)">★</div>
+            <div class="constellation-star" data-letter="K" onclick="lightStar(this)">★</div>
+            <div class="constellation-star" data-letter="R" onclick="lightStar(this)">★</div>
+            <div class="constellation-star" data-letter="I" onclick="lightStar(this)">★</div>
+            <div class="constellation-star" data-letter="S" onclick="lightStar(this)">★</div>
+            <div class="constellation-star" data-letter="H" onclick="lightStar(this)">★</div>
+            <div class="constellation-star" data-letter="A" onclick="lightStar(this)">★</div>
         </div>
-        
         <div id="propose-question">Will you be mine forever?</div>
-        
-        <div id="stardust-hint">Sign our destiny</div>
+        <div id="stardust-hint">Sign our destiny (Draw a Heart)</div>
         <canvas id="stardust-canvas"></canvas>
-        
         <div id="final-propose-msg">
             Forever & Always ❤️<br>
             <span style="font-size:2rem; font-family:'Quicksand'">I promise to love you.</span>
         </div>
     </div>
 
+    <div id="chocolate-layer">
+        <button class="back-btn" onclick="goBackToSchedule('chocolate')" style="z-index: 8000;">← Back to Calendar</button>
+        
+        <div class="drip-container" id="drip-container"></div>
+        <div class="choco-wave"></div>
+
+        <h2 style="font-family:'Dancing Script'; font-size:3.5rem; margin-bottom:40px; color:#ffecb3; z-index: 7005; text-shadow: 0 2px 10px #3e2723;">Flavor of My Heart</h2>
+        
+        <div id="choco-container">
+            <div class="choco-item choco-heart" id="center-heart" onclick="openHeart()">
+                <span>❤️</span>
+            </div>
+            
+            <div class="choco-item choco-dark" onclick="eatChoco(this, 'Dark')">🍫</div>
+            <div class="choco-item choco-milk" onclick="eatChoco(this, 'Milk')">🥛</div>
+            <div class="choco-item choco-white" onclick="eatChoco(this, 'White')">🤍</div>
+            <div class="choco-item choco-caramel" onclick="eatChoco(this, 'Caramel')">🍯</div>
+            <div class="choco-item choco-truffle" onclick="eatChoco(this, 'Truffle')">🧁</div>
+            <div class="choco-item choco-hazel" onclick="eatChoco(this, 'Hazel')">🌰</div>
+        </div>
+        <div id="choco-msg-display"></div>
+    </div>
+
     <div id="hunt-layer">
+        <button class="back-btn" onclick="goBackToSchedule('rose')" style="z-index:6000;">← Back</button>
         <div id="hunt-instruction" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:rgba(255,255,255,0.3); pointer-events:none;">Find the rose in the dark...</div>
     </div>
-    <div id="reveal-overlay" onclick="closeReveal()">
+    <div id="reveal-overlay">
+        <button class="back-btn" onclick="goBackToSchedule('reveal')">← Back to Calendar</button>
         <div style="font-size: 5rem; margin-bottom: 20px; animation: gentleBeat 2s infinite;">🌹</div>
         <div id="final-letter"></div>
     </div>
@@ -233,7 +341,7 @@
         <div class="scroll-area">
             <div class="day-item" style="animation-delay: 0.1s" onclick="startTreasureHunt()"><div class="day-icon">🌹</div><div><div class="day-date">Feb 7</div><div class="day-title">Rose Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.2s" onclick="startProposeDay()"><div class="day-icon">💍</div><div><div class="day-date">Feb 8</div><div class="day-title">Propose Day</div></div></div>
-            <div class="day-item" style="animation-delay: 0.3s"><div class="day-icon">♥️</div><div><div class="day-date">Feb 9</div><div class="day-title">Syrup Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.3s" onclick="startChocolateDay()"><div class="day-icon">🍫</div><div><div class="day-date">Feb 9</div><div class="day-title">Chocolate Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.4s"><div class="day-icon">🧸</div><div><div class="day-date">Feb 10</div><div class="day-title">Teddy Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.5s"><div class="day-icon">🤝</div><div><div class="day-date">Feb 11</div><div class="day-title">Promise Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.6s"><div class="day-icon">🫂</div><div><div class="day-date">Feb 12</div><div class="day-title">Hug Day</div></div></div>
@@ -255,6 +363,28 @@
         const cursor = document.getElementById('custom-cursor');
         
         let noClicks = 0;
+
+        // --- GLOBAL BACK BUTTON LOGIC ---
+        function goBackToSchedule(fromLayer) {
+            if(fromLayer === 'rose') document.getElementById('hunt-layer').style.display = 'none';
+            if(fromLayer === 'reveal') document.getElementById('reveal-overlay').style.display = 'none';
+            if(fromLayer === 'propose') {
+                const pLayer = document.getElementById('propose-layer');
+                pLayer.style.display = 'none';
+                pLayer.classList.remove('sunrise-mode');
+                document.getElementById('stardust-canvas').style.opacity = '0';
+            }
+            if(fromLayer === 'chocolate') {
+                document.getElementById('chocolate-layer').style.display = 'none';
+                clearInterval(rainInterval); // Stop rain loop to save resources
+            }
+
+            scheduleScreen.style.display = 'flex';
+            setTimeout(() => {
+                scheduleScreen.style.opacity = '1';
+                scheduleScreen.style.transform = 'translateY(0)';
+            }, 100);
+        }
 
         // --- CURSOR ---
         document.addEventListener('mousemove', (e) => {
@@ -338,7 +468,7 @@
             }
         });
 
-        // --- GENERAL FUNCTIONS ---
+        // --- PARTICLES ---
         function createParticles() {
             setInterval(() => {
                 const p = document.createElement('div');
@@ -504,11 +634,9 @@
                 document.body.appendChild(petal);
             }
         }
-        function closeReveal() { document.getElementById('reveal-overlay').style.display = 'none'; }
-// =========================================
-        // --- PROPOSE DAY LOGIC (NEW) ---
-        // =========================================
-        
+
+
+        // --- PROPOSE DAY LOGIC ---
         let starsLit = 0;
         let isDrawing = false;
         let drawnPoints = 0;
@@ -521,17 +649,13 @@
             }, 500);
         }
 
-        function lightStar(el, index) {
+        function lightStar(el) {
             if (el.classList.contains('star-lit')) return;
             el.classList.add('star-lit');
             starsLit++;
-            
-            // Check if all stars (KRISHA) are lit
             if (starsLit === 6) {
                 setTimeout(() => {
                     document.getElementById('propose-question').style.opacity = '1';
-                    
-                    // Reveal Drawing Canvas after question
                     setTimeout(() => {
                         const canvas = document.getElementById('stardust-canvas');
                         const hint = document.getElementById('stardust-hint');
@@ -547,12 +671,9 @@
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight * 0.4;
-            
-            // Mouse/Touch Events
             const startDraw = () => { isDrawing = true; };
             const stopDraw = () => { 
                 isDrawing = false; 
-                // Check if enough is drawn to trigger success
                 if(drawnPoints > 50) triggerProposeSuccess();
             };
             const draw = (e) => {
@@ -560,53 +681,135 @@
                 const rect = canvas.getBoundingClientRect();
                 const x = (e.clientX || e.touches[0].clientX) - rect.left;
                 const y = (e.clientY || e.touches[0].clientY) - rect.top;
-                
-                // Draw Glowing Particle
                 ctx.beginPath();
                 ctx.arc(x, y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = `hsl(${Math.random()*60 + 20}, 100%, 70%)`; // Gold/Warm colors
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = 'white';
-                ctx.fill();
-                
+                ctx.fillStyle = `hsl(${Math.random()*60 + 20}, 100%, 70%)`;
+                ctx.shadowBlur = 10; ctx.shadowColor = 'white'; ctx.fill();
                 drawnPoints++;
             };
-
             canvas.addEventListener('mousedown', startDraw);
             canvas.addEventListener('touchstart', startDraw);
-            
             canvas.addEventListener('mouseup', stopDraw);
             canvas.addEventListener('touchend', stopDraw);
-            
             canvas.addEventListener('mousemove', draw);
             canvas.addEventListener('touchmove', draw);
         }
 
         function triggerProposeSuccess() {
-            // Ignite!
             const layer = document.getElementById('propose-layer');
             layer.classList.add('sunrise-mode');
-            
-            // Hide previous elements
             document.getElementById('star-container').style.display = 'none';
             document.getElementById('propose-question').style.display = 'none';
             document.getElementById('stardust-canvas').style.display = 'none';
             document.getElementById('stardust-hint').style.display = 'none';
-
-            // Show Final Message
             document.getElementById('final-propose-msg').style.display = 'block';
-            
-            // Big Particle Explosion
             for(let i=0; i<100; i++) {
                 const p = document.createElement('div');
                 p.classList.add('floating-heart');
-                p.innerHTML = '✨';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.top = '100vh';
-                p.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                p.style.zIndex = 9000;
-                document.body.appendChild(p);
+                p.innerHTML = '✨'; p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = '100vh'; p.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                p.style.zIndex = 9000; document.body.appendChild(p);
             }
+        }
+
+        // =========================================
+        // --- CHOCOLATE DAY LOGIC (REDUX) ---
+        // =========================================
+        let tastedChocos = 0;
+        const totalChocos = 6;
+        let isHeartUnlocked = false;
+        let rainInterval; // Used to stop the rain when going back
+
+        function startChocolateDay() {
+            scheduleScreen.style.opacity = '0';
+            setTimeout(() => {
+                scheduleScreen.style.display = 'none';
+                document.getElementById('chocolate-layer').style.display = 'flex';
+                
+                // Build the top CSS Drips dynamically
+                const dripContainer = document.getElementById('drip-container');
+                dripContainer.innerHTML = ''; // clear old
+                for(let i=0; i<8; i++) {
+                    const drip = document.createElement('div');
+                    drip.classList.add('drip');
+                    // Randomize drip lengths and speeds
+                    drip.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    drip.style.animationDelay = (Math.random() * 2) + 's';
+                    dripContainer.appendChild(drip);
+                }
+
+                // Start raining chocolate in the background
+                rainInterval = setInterval(() => {
+                    if(document.getElementById('chocolate-layer').style.display === 'none') return;
+                    const drop = document.createElement('div');
+                    drop.classList.add('choco-drop');
+                    drop.innerHTML = ['🍫', '🤎', '🍩', '🟤'][Math.floor(Math.random()*4)];
+                    drop.style.left = Math.random() * 100 + 'vw';
+                    drop.style.top = '-50px';
+                    drop.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    document.getElementById('chocolate-layer').appendChild(drop);
+                    setTimeout(() => drop.remove(), 7000);
+                }, 200); // 200ms interval for consistent rain
+
+            }, 500);
+        }
+
+        function eatChoco(el, type) {
+            if (el.classList.contains('eaten')) return;
+
+            el.classList.add('eaten');
+            tastedChocos++;
+
+            // Update Liquid Fill
+            const fillPercentage = (tastedChocos / totalChocos) * 100;
+            document.getElementById('center-heart').style.setProperty('--fill-level', fillPercentage + '%');
+
+            // Show Message based on Flavor
+            const msgBox = document.getElementById('choco-msg-display');
+            msgBox.style.opacity = 0;
+            
+            let message = "";
+            switch(type) {
+                case 'Dark': message = "I love how deep and soulful our conversations are, just like dark chocolate."; break;
+                case 'Milk': message = "Your smile is sweeter than any milk chocolate."; break;
+                case 'White': message = "I love the pure and honest way you care for me, like the purest white chocolate."; break;
+                case 'Caramel': message = "You make the toughest days smooth and sweet like melting caramel."; break;
+                case 'Truffle': message = "You are the hidden gem of my life, like a truffle filled with surprises."; break;
+                case 'Hazel': message = "I am absolutely nuts about you! Hazelnut never disappoints."; break;
+            }
+
+            setTimeout(() => {
+                msgBox.innerText = message;
+                msgBox.style.opacity = 1;
+            }, 300);
+
+            // Unlock Heart
+            if (tastedChocos === totalChocos) {
+                setTimeout(() => {
+                    const heart = document.getElementById('center-heart');
+                    heart.classList.add('heart-unlocked');
+                    isHeartUnlocked = true;
+                    msgBox.innerText = "The final piece of chocolate is ready...Open it!";
+                }, 1500);
+            }
+        }
+
+        function openHeart() {
+            if (!isHeartUnlocked) return;
+            const msgBox = document.getElementById('choco-msg-display');
+            msgBox.style.opacity = 0;
+            
+            // FADE OUT THE CHOCOLATE CONTAINER
+            const container = document.getElementById('choco-container');
+            container.style.transition = "opacity 1s ease, transform 1s ease";
+            container.style.opacity = '0';
+            container.style.transform = 'scale(1.5)';
+            setTimeout(() => container.style.display = 'none', 1000);
+
+            setTimeout(() => {
+                msgBox.innerHTML = "<span style='font-size:2.5rem; color:#ff0055'>You are the flavor of my life.<br>Happy Chocolate Day, Krisha!</span>";
+                msgBox.style.opacity = 1;
+            }, 300);
         }
 
     </script>
