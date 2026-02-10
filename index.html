@@ -148,19 +148,14 @@
         .sunrise-mode { background: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important; }
         #final-propose-msg { display: none; font-family: 'Dancing Script', cursive; font-size: 4rem; color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.2); animation: fadeIn 3s; z-index: 8000; }
 
-        /* ========================================= */
-        /* --- CHOCOLATE DAY STYLES (REDUX) --- */
-        /* ========================================= */
+        /* --- CHOCOLATE DAY STYLES --- */
         #chocolate-layer {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #2b1d1a; z-index: 7000;
             flex-direction: column; justify-content: center; align-items: center;
             overflow: hidden;
         }
-
-        /* 1. Raining Chocolate & Bottom Wave */
         .choco-drop { position: absolute; font-size: 2rem; opacity: 0.7; z-index: 7001; animation: fallRotate 5s linear forwards; pointer-events: none; }
-        
         .choco-wave {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 150px;
             background: #4e342e; border-radius: 50% 50% 0 0;
@@ -168,8 +163,6 @@
             z-index: 7001; box-shadow: inset 0 20px 20px rgba(0,0,0,0.3);
         }
         @keyframes riseWave { 0% { height: 100px; } 100% { height: 160px; } }
-
-        /* 2. Dripping from Top */
         .drip-container { position: absolute; top: 0; left: 0; width: 100%; display: flex; height: 50px; z-index: 7002; }
         .drip {
             flex: 1; background: #3e2723; border-radius: 0 0 50px 50px;
@@ -177,36 +170,26 @@
             box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);
         }
         @keyframes dripAnim { 0% { transform: scaleY(0.5); } 100% { transform: scaleY(1.5); } }
-
-        /* 3. The Circular Container */
         #choco-container {
             position: relative; width: 350px; height: 350px;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            z-index: 7005;
-            transition: opacity 1s ease, transform 1s ease;
+            z-index: 7005; transition: opacity 1s ease, transform 1s ease;
         }
-
-        /* Fixed Jitter: Use CSS 'scale' property instead of 'transform' for hover */
         .choco-item {
             position: absolute; width: 70px; height: 70px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             font-size: 2rem; cursor: none; 
             transition: scale 0.3s ease, filter 0.3s, opacity 0.3s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            scale: 1; /* Independent of Transform */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4); scale: 1;
         }
         .choco-item:hover { scale: 1.15; z-index: 10; }
         .choco-item.eaten { opacity: 0.3; filter: grayscale(100%); pointer-events: none; }
-
-        /* Radial Positioning remains clean */
         .choco-dark { background: #3e2723; border: 2px solid #5d4037; transform: rotate(0deg) translate(130px) rotate(0deg); }
         .choco-milk { background: #795548; border: 2px solid #a1887f; transform: rotate(60deg) translate(130px) rotate(-60deg); }
         .choco-white { background: #f5f5f5; border: 2px solid #e0e0e0; transform: rotate(120deg) translate(130px) rotate(-120deg); }
         .choco-caramel { background: #d7ccc8; border: 2px solid #ffcc80; transform: rotate(180deg) translate(130px) rotate(-180deg); }
         .choco-truffle { background: #4e342e; border: 2px solid gold; transform: rotate(240deg) translate(130px) rotate(-240deg); }
         .choco-hazel { background: #8d6e63; border: 2px solid #bcaaa4; transform: rotate(300deg) translate(130px) rotate(-300deg); }
-
-        /* 4. The Liquid Pink Fill Heart */
         .choco-heart { 
             width: 100px; height: 100px; border-radius: 50%;
             background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2);
@@ -216,8 +199,6 @@
             font-size: 2.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
             transition: border-color 0.5s, box-shadow 0.5s;
         }
-        
-        /* The Pink Liquid */
         .choco-heart::before {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
             height: var(--fill-level, 0%);
@@ -225,20 +206,100 @@
             transition: height 0.8s cubic-bezier(0.2, 1, 0.3, 1);
             z-index: -1;
         }
-        
         .choco-heart span { z-index: 2; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-
         .heart-unlocked { 
             pointer-events: auto !important; opacity: 1; border-color: #ff0055;
             box-shadow: 0 0 30px #ff0055, inset 0 0 20px rgba(255,0,85,0.5);
             animation: pulseBtn 2s infinite; cursor: none;
         }
-
         #choco-msg-display {
             margin-top: 40px; min-height: 60px; text-align: center; z-index: 7005;
             font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ffccbc;
             text-shadow: 0 2px 5px rgba(0,0,0,0.8); opacity: 0; transition: opacity 0.5s;
             max-width: 80%; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px;
+        }
+
+        /* --- TEDDY DAY STYLES --- */
+        #teddy-layer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4); z-index: 7000;
+            flex-direction: column; justify-content: center; align-items: center;
+        }
+        #teddy-wrapper {
+            position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center;
+        }
+        #big-teddy {
+            font-size: 10rem; cursor: pointer; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); user-select: none; z-index: 2;
+        }
+        .paw {
+            position: absolute; font-size: 4rem; opacity: 0; transition: all 0.5s ease;
+            z-index: 3;
+        }
+        .left-paw { left: -50px; transform: rotate(-20deg); }
+        .right-paw { right: -50px; transform: rotate(20deg); }
+        .hugging #big-teddy { transform: scale(0.9); filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); }
+        .hugging .left-paw { opacity: 1; left: 20px; transform: rotate(0deg); }
+        .hugging .right-paw { opacity: 1; right: 20px; transform: rotate(0deg); }
+        #hug-instruction {
+            font-family: 'Quicksand'; font-size: 1.5rem; color: #fff; margin-top: 40px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2); pointer-events: none;
+        }
+        #teddy-msg {
+            display: none; margin-top: 30px; text-align: center;
+            font-family: 'Dancing Script'; font-size: 2.2rem; color: #d81b60;
+            background: rgba(255,255,255,0.8); padding: 20px; border-radius: 20px;
+            max-width: 80%; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 1s; z-index: 7005;
+        }
+
+        /* ========================================= */
+        /* --- PROMISE DAY STYLES (CHAIN) --- */
+        /* ========================================= */
+        #promise-layer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #2c3e50; /* Stormy grey start */
+            z-index: 7000;
+            flex-direction: column; justify-content: center; align-items: center; overflow: hidden;
+            transition: background 2s ease;
+        }
+        .night-glow { background: radial-gradient(circle, #1a0b2e 0%, #000000 100%) !important; }
+
+        #promise-instruction {
+            position: absolute; top: 15%; font-family: 'Quicksand'; font-size: 1.2rem; color: rgba(255,255,255,0.6);
+            pointer-events: none; z-index: 7005; transition: opacity 1s;
+        }
+        
+        /* The Rings */
+        .promise-ring {
+            position: absolute; width: 100px; height: 100px; border-radius: 50%;
+            border: 4px solid #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5), inset 0 0 10px rgba(255,215,0,0.2);
+            display: flex; justify-content: center; align-items: center;
+            color: #ffd700; font-family: 'Cinzel', serif; font-weight: bold; font-size: 1rem;
+            cursor: move; cursor: grab; z-index: 7010;
+            background: rgba(0,0,0,0.3); backdrop-filter: blur(2px);
+            transition: transform 0.3s, opacity 2s, filter 2s; /* Added fade transitions */
+        }
+        .promise-ring:active { cursor: grabbing; transform: scale(1.1); }
+        .ring-locked { border-color: #fff; color: #fff; box-shadow: 0 0 20px #fff; pointer-events: none; z-index: 7005 !important; }
+        
+        /* Vanish Animation */
+        .ring-vanish { transform: scale(1.5) !important; opacity: 0 !important; filter: blur(20px) !important; }
+
+        /* The Slots (Invisible Targets - Aligned Horizontally) */
+        .ring-slot {
+            position: absolute; width: 100px; height: 100px; border-radius: 50%;
+            border: 2px dashed rgba(255,255,255,0.1); transform: translate(-50%, -50%);
+            pointer-events: none; opacity: 0; /* Hidden slots */
+        }
+
+        #promise-message-container {
+            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center; width: 80%; z-index: 8000; animation: fadeIn 2s;
+        }
+        #promise-message {
+            font-family: 'Dancing Script'; font-size: 2.5rem; color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8); line-height: 1.5;
         }
 
         /* Animations */
@@ -279,17 +340,11 @@
 
     <div id="chocolate-layer">
         <button class="back-btn" onclick="goBackToSchedule('chocolate')" style="z-index: 8000;">← Back to Calendar</button>
-        
         <div class="drip-container" id="drip-container"></div>
         <div class="choco-wave"></div>
-
         <h2 style="font-family:'Dancing Script'; font-size:3.5rem; margin-bottom:40px; color:#ffecb3; z-index: 7005; text-shadow: 0 2px 10px #3e2723;">Flavor of My Heart</h2>
-        
         <div id="choco-container">
-            <div class="choco-item choco-heart" id="center-heart" onclick="openHeart()">
-                <span>❤️</span>
-            </div>
-            
+            <div class="choco-item choco-heart" id="center-heart" onclick="openHeart()"><span>❤️</span></div>
             <div class="choco-item choco-dark" onclick="eatChoco(this, 'Dark')">🍫</div>
             <div class="choco-item choco-milk" onclick="eatChoco(this, 'Milk')">🥛</div>
             <div class="choco-item choco-white" onclick="eatChoco(this, 'White')">🤍</div>
@@ -298,6 +353,39 @@
             <div class="choco-item choco-hazel" onclick="eatChoco(this, 'Hazel')">🌰</div>
         </div>
         <div id="choco-msg-display"></div>
+    </div>
+
+    <div id="teddy-layer">
+        <button class="back-btn" onclick="goBackToSchedule('teddy')" style="color:#d81b60; border-color:#d81b60;">← Back to Calendar</button>
+        <div id="teddy-wrapper" onmousedown="startHug()" onmouseup="endHug()" ontouchstart="startHug()" ontouchend="endHug()">
+            <div class="paw left-paw">🐾</div>
+            <div id="big-teddy">🧸</div>
+            <div class="paw right-paw">🐾</div>
+        </div>
+        <div id="hug-instruction">Hold to Hug Me</div>
+        <div id="teddy-msg">
+            In a world full of noise, your hug is my only silence.<br>
+            It's where my soul finally puts down its heavy load.<br>
+            I find peace when she hugs me. ❤️
+        </div>
+    </div>
+
+    <div id="promise-layer">
+        <button class="back-btn" onclick="goBackToSchedule('promise')">← Back to Calendar</button>
+        <div id="promise-instruction">Link the promises together to seal them...</div>
+        
+        <div class="promise-ring" id="ring-trust" style="top:20%; left:10%;">Trust</div>
+        <div class="promise-ring" id="ring-love" style="top:80%; left:80%;">Love</div>
+        <div class="promise-ring" id="ring-time" style="top:20%; left:80%;">Time</div>
+        <div class="promise-ring" id="ring-forever" style="top:80%; left:10%;">Forever</div>
+
+        <div id="promise-message-container">
+            <div id="promise-message">
+                I promise to be your trust, your time,<br>
+                and your forever love.<br>
+                This chain will never break. 💍
+            </div>
+        </div>
     </div>
 
     <div id="hunt-layer">
@@ -342,8 +430,8 @@
             <div class="day-item" style="animation-delay: 0.1s" onclick="startTreasureHunt()"><div class="day-icon">🌹</div><div><div class="day-date">Feb 7</div><div class="day-title">Rose Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.2s" onclick="startProposeDay()"><div class="day-icon">💍</div><div><div class="day-date">Feb 8</div><div class="day-title">Propose Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.3s" onclick="startChocolateDay()"><div class="day-icon">🍫</div><div><div class="day-date">Feb 9</div><div class="day-title">Chocolate Day</div></div></div>
-            <div class="day-item" style="animation-delay: 0.4s"><div class="day-icon">🧸</div><div><div class="day-date">Feb 10</div><div class="day-title">Teddy Day</div></div></div>
-            <div class="day-item" style="animation-delay: 0.5s"><div class="day-icon">🤝</div><div><div class="day-date">Feb 11</div><div class="day-title">Promise Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.4s" onclick="startTeddyDay()"><div class="day-icon">🧸</div><div><div class="day-date">Feb 10</div><div class="day-title">Teddy Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.5s" onclick="startPromiseDay()"><div class="day-icon">🤝</div><div><div class="day-date">Feb 11</div><div class="day-title">Promise Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.6s"><div class="day-icon">🫂</div><div><div class="day-date">Feb 12</div><div class="day-title">Hug Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.7s"><div class="day-icon">💋</div><div><div class="day-date">Feb 13</div><div class="day-title">Kiss Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.8s; background: rgba(255,0,127,0.2); border: 1px solid rgba(255,0,127,0.5);"><div class="day-icon">❤️</div><div><div class="day-date">Feb 14</div><div class="day-title">Valentine's Day</div></div></div>
@@ -376,7 +464,28 @@
             }
             if(fromLayer === 'chocolate') {
                 document.getElementById('chocolate-layer').style.display = 'none';
-                clearInterval(rainInterval); // Stop rain loop to save resources
+                clearInterval(rainInterval);
+            }
+            if(fromLayer === 'teddy') {
+                document.getElementById('teddy-layer').style.display = 'none';
+                document.getElementById('teddy-msg').style.display = 'none';
+                endHug();
+            }
+            if(fromLayer === 'promise') {
+                document.getElementById('promise-layer').style.display = 'none';
+                document.getElementById('promise-layer').classList.remove('night-glow'); // Reset bg
+                // Reset promise rings for replay
+                const rings = document.querySelectorAll('.promise-ring');
+                rings.forEach(r => {
+                    r.style.transform = 'translate(0,0) scale(1)';
+                    r.style.opacity = '1'; r.style.filter = 'none';
+                    r.classList.remove('ring-locked', 'ring-vanish');
+                    r.style.top = r.id==='ring-trust'?'20%': r.id==='ring-love'?'80%': r.id==='ring-time'?'20%':'80%';
+                    r.style.left = r.id==='ring-trust'?'10%': r.id==='ring-love'?'80%': r.id==='ring-time'?'80%':'10%';
+                });
+                document.getElementById('promise-message-container').style.display = 'none';
+                document.getElementById('promise-instruction').style.opacity = '1';
+                snappedRings = 0;
             }
 
             scheduleScreen.style.display = 'flex';
@@ -713,32 +822,27 @@
         }
 
         // =========================================
-        // --- CHOCOLATE DAY LOGIC (REDUX) ---
+        // --- CHOCOLATE DAY LOGIC ---
         // =========================================
         let tastedChocos = 0;
         const totalChocos = 6;
         let isHeartUnlocked = false;
-        let rainInterval; // Used to stop the rain when going back
+        let rainInterval;
 
         function startChocolateDay() {
             scheduleScreen.style.opacity = '0';
             setTimeout(() => {
                 scheduleScreen.style.display = 'none';
                 document.getElementById('chocolate-layer').style.display = 'flex';
-                
-                // Build the top CSS Drips dynamically
                 const dripContainer = document.getElementById('drip-container');
-                dripContainer.innerHTML = ''; // clear old
+                dripContainer.innerHTML = '';
                 for(let i=0; i<8; i++) {
                     const drip = document.createElement('div');
                     drip.classList.add('drip');
-                    // Randomize drip lengths and speeds
                     drip.style.animationDuration = (Math.random() * 2 + 2) + 's';
                     drip.style.animationDelay = (Math.random() * 2) + 's';
                     dripContainer.appendChild(drip);
                 }
-
-                // Start raining chocolate in the background
                 rainInterval = setInterval(() => {
                     if(document.getElementById('chocolate-layer').style.display === 'none') return;
                     const drop = document.createElement('div');
@@ -749,25 +853,18 @@
                     drop.style.animationDuration = (Math.random() * 3 + 4) + 's';
                     document.getElementById('chocolate-layer').appendChild(drop);
                     setTimeout(() => drop.remove(), 7000);
-                }, 200); // 200ms interval for consistent rain
-
+                }, 200);
             }, 500);
         }
 
         function eatChoco(el, type) {
             if (el.classList.contains('eaten')) return;
-
             el.classList.add('eaten');
             tastedChocos++;
-
-            // Update Liquid Fill
             const fillPercentage = (tastedChocos / totalChocos) * 100;
             document.getElementById('center-heart').style.setProperty('--fill-level', fillPercentage + '%');
-
-            // Show Message based on Flavor
             const msgBox = document.getElementById('choco-msg-display');
             msgBox.style.opacity = 0;
-            
             let message = "";
             switch(type) {
                 case 'Dark': message = "I love how deep and soulful our conversations are, just like dark chocolate."; break;
@@ -777,19 +874,13 @@
                 case 'Truffle': message = "You are the hidden gem of my life, like a truffle filled with surprises."; break;
                 case 'Hazel': message = "I am absolutely nuts about you! Hazelnut never disappoints."; break;
             }
-
-            setTimeout(() => {
-                msgBox.innerText = message;
-                msgBox.style.opacity = 1;
-            }, 300);
-
-            // Unlock Heart
+            setTimeout(() => { msgBox.innerText = message; msgBox.style.opacity = 1; }, 300);
             if (tastedChocos === totalChocos) {
                 setTimeout(() => {
                     const heart = document.getElementById('center-heart');
                     heart.classList.add('heart-unlocked');
                     isHeartUnlocked = true;
-                    msgBox.innerText = "The final piece of chocolate is ready...Open it!";
+                    msgBox.innerText = "The final piece is ready... Tap it.";
                 }, 1500);
             }
         }
@@ -798,18 +889,158 @@
             if (!isHeartUnlocked) return;
             const msgBox = document.getElementById('choco-msg-display');
             msgBox.style.opacity = 0;
-            
-            // FADE OUT THE CHOCOLATE CONTAINER
             const container = document.getElementById('choco-container');
             container.style.transition = "opacity 1s ease, transform 1s ease";
-            container.style.opacity = '0';
-            container.style.transform = 'scale(1.5)';
+            container.style.opacity = '0'; container.style.transform = 'scale(1.5)';
             setTimeout(() => container.style.display = 'none', 1000);
-
             setTimeout(() => {
                 msgBox.innerHTML = "<span style='font-size:2.5rem; color:#ff0055'>You are the flavor of my life.<br>Happy Chocolate Day, Krisha!</span>";
                 msgBox.style.opacity = 1;
             }, 300);
+        }
+
+        // =========================================
+        // --- TEDDY DAY LOGIC ---
+        // =========================================
+        let hugTimer;
+        let vibrateInterval;
+
+        function startTeddyDay() {
+            scheduleScreen.style.opacity = '0';
+            setTimeout(() => {
+                scheduleScreen.style.display = 'none';
+                document.getElementById('teddy-layer').style.display = 'flex';
+            }, 500);
+        }
+
+        function startHug() {
+            const teddy = document.getElementById('teddy-wrapper');
+            teddy.classList.add('hugging');
+            if(navigator.vibrate) {
+                navigator.vibrate([50, 100, 50, 100]);
+                vibrateInterval = setInterval(() => { navigator.vibrate([50, 100, 50, 100]); }, 1000);
+            }
+            hugTimer = setTimeout(triggerTeddyReveal, 3000);
+        }
+
+        function endHug() {
+            const teddy = document.getElementById('teddy-wrapper');
+            teddy.classList.remove('hugging');
+            clearTimeout(hugTimer);
+            clearInterval(vibrateInterval);
+            if(navigator.vibrate) navigator.vibrate(0);
+        }
+
+        function triggerTeddyReveal() {
+            endHug();
+            document.getElementById('hug-instruction').style.display = 'none';
+            const msg = document.getElementById('teddy-msg');
+            msg.style.display = 'block';
+            for(let i=0; i<30; i++) {
+                const p = document.createElement('div');
+                p.classList.add('floating-heart');
+                p.innerHTML = '🧸'; p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = '100vh'; p.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                p.style.zIndex = 7005; document.getElementById('teddy-layer').appendChild(p);
+            }
+        }
+
+        // =========================================
+        // --- PROMISE DAY LOGIC (CHAIN) ---
+        // =========================================
+        let snappedRings = 0;
+
+        function startPromiseDay() {
+            scheduleScreen.style.opacity = '0';
+            setTimeout(() => {
+                scheduleScreen.style.display = 'none';
+                document.getElementById('promise-layer').style.display = 'flex';
+                initPromiseDrag();
+            }, 500);
+        }
+
+        function initPromiseDrag() {
+            const rings = document.querySelectorAll('.promise-ring');
+            // Horizontal chain slots
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const slots = [
+                {x: centerX - 160, y: centerY}, 
+                {x: centerX - 60, y: centerY}, 
+                {x: centerX + 40, y: centerY}, 
+                {x: centerX + 140, y: centerY}
+            ];
+
+            rings.forEach((ring, index) => {
+                let isDragging = false;
+                
+                const startDrag = (e) => {
+                    if(ring.classList.contains('ring-locked')) return;
+                    isDragging = true;
+                    ring.style.zIndex = 7020;
+                };
+                
+                const moveDrag = (e) => {
+                    if(!isDragging) return;
+                    const clientX = e.clientX || e.touches[0].clientX;
+                    const clientY = e.clientY || e.touches[0].clientY;
+                    
+                    ring.style.left = (clientX - 50) + 'px'; 
+                    ring.style.top = (clientY - 50) + 'px';
+                    
+                    slots.forEach(slot => {
+                        const dist = Math.hypot(clientX - slot.x, clientY - slot.y);
+                        if(dist < 50) {
+                            isDragging = false;
+                            ring.classList.add('ring-locked');
+                            ring.style.left = (slot.x - 50) + 'px';
+                            ring.style.top = (slot.y - 50) + 'px';
+                            ring.style.transform = 'scale(1.1)';
+                            snappedRings++;
+                            if(snappedRings === 4) triggerPromiseReveal();
+                        }
+                    });
+                };
+                
+                const endDrag = () => { isDragging = false; ring.style.zIndex = 7010; };
+
+                ring.addEventListener('mousedown', startDrag);
+                ring.addEventListener('touchstart', startDrag);
+                window.addEventListener('mousemove', moveDrag);
+                window.addEventListener('touchmove', moveDrag);
+                window.addEventListener('mouseup', endDrag);
+                window.addEventListener('touchend', endDrag);
+            });
+        }
+
+        function triggerPromiseReveal() {
+            setTimeout(() => {
+                document.getElementById('promise-instruction').style.opacity = 0;
+                
+                // Vanish Rings
+                const rings = document.querySelectorAll('.promise-ring');
+                rings.forEach(r => r.classList.add('ring-vanish'));
+
+                // Glow Background
+                setTimeout(() => {
+                    document.getElementById('promise-layer').classList.add('night-glow');
+                    document.getElementById('promise-message-container').style.display = 'block';
+                    
+                    // Stars
+                    for(let i=0; i<100; i++) {
+                        const s = document.createElement('div');
+                        s.style.position = 'absolute';
+                        s.style.width = Math.random() * 3 + 'px';
+                        s.style.height = s.style.width;
+                        s.style.background = 'white';
+                        s.style.borderRadius = '50%';
+                        s.style.left = Math.random() * 100 + 'vw';
+                        s.style.top = Math.random() * 100 + 'vh';
+                        s.style.animation = `pulseStar ${Math.random()*2+1}s infinite`;
+                        document.getElementById('promise-layer').appendChild(s);
+                    }
+                }, 1000);
+            }, 500);
         }
 
     </script>
