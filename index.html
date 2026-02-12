@@ -253,9 +253,7 @@
             animation: fadeIn 1s; z-index: 7005;
         }
 
-        /* ========================================= */
         /* --- PROMISE DAY STYLES (CHAIN) --- */
-        /* ========================================= */
         #promise-layer {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #2c3e50; /* Stormy grey start */
@@ -269,8 +267,6 @@
             position: absolute; top: 15%; font-family: 'Quicksand'; font-size: 1.2rem; color: rgba(255,255,255,0.6);
             pointer-events: none; z-index: 7005; transition: opacity 1s;
         }
-        
-        /* The Rings */
         .promise-ring {
             position: absolute; width: 100px; height: 100px; border-radius: 50%;
             border: 4px solid #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5), inset 0 0 10px rgba(255,215,0,0.2);
@@ -278,21 +274,16 @@
             color: #ffd700; font-family: 'Cinzel', serif; font-weight: bold; font-size: 1rem;
             cursor: move; cursor: grab; z-index: 7010;
             background: rgba(0,0,0,0.3); backdrop-filter: blur(2px);
-            transition: transform 0.3s, opacity 2s, filter 2s; /* Added fade transitions */
+            transition: transform 0.3s, opacity 2s, filter 2s;
         }
         .promise-ring:active { cursor: grabbing; transform: scale(1.1); }
         .ring-locked { border-color: #fff; color: #fff; box-shadow: 0 0 20px #fff; pointer-events: none; z-index: 7005 !important; }
-        
-        /* Vanish Animation */
         .ring-vanish { transform: scale(1.5) !important; opacity: 0 !important; filter: blur(20px) !important; }
-
-        /* The Slots (Invisible Targets - Aligned Horizontally) */
         .ring-slot {
             position: absolute; width: 100px; height: 100px; border-radius: 50%;
             border: 2px dashed rgba(255,255,255,0.1); transform: translate(-50%, -50%);
-            pointer-events: none; opacity: 0; /* Hidden slots */
+            pointer-events: none; opacity: 0; 
         }
-
         #promise-message-container {
             display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             text-align: center; width: 80%; z-index: 8000; animation: fadeIn 2s;
@@ -300,6 +291,77 @@
         #promise-message {
             font-family: 'Dancing Script'; font-size: 2.5rem; color: #fff;
             text-shadow: 0 0 20px rgba(255,255,255,0.8); line-height: 1.5;
+        }
+
+        /* ========================================= */
+        /* --- HUG DAY STYLES (FROZEN EDITION) --- */
+        /* ========================================= */
+        #hug-layer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* FROZEN START: Icy Blue Gradient */
+            background: linear-gradient(to bottom, #00c6ff, #0072ff); 
+            z-index: 7000; flex-direction: column; justify-content: center; align-items: center;
+            transition: background 3s ease;
+        }
+        /* WARM END: Pink/Warm Gradient */
+        .warm-mode { background: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important; }
+        
+        #frost-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* Ice Texture Effect */
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.6) 100%);
+            backdrop-filter: blur(3px);
+            pointer-events: none; transition: opacity 2s ease; z-index: 7001;
+        }
+        
+        /* Cracking Animation */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .ice-cracking { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite; }
+
+        /* Snow Particle */
+        .snow-drop {
+            position: absolute; font-size: 1.5rem; color: white;
+            top: -50px; z-index: 7500; pointer-events: none;
+            animation: snowFall linear forwards;
+        }
+        @keyframes snowFall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
+
+        #hand-scanner {
+            width: 150px; height: 150px; border: 3px solid rgba(255,255,255,0.6); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 4rem; color: rgba(255,255,255,0.8); cursor: pointer;
+            position: relative; z-index: 7005; transition: all 0.5s;
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+        #hand-scanner::after {
+            content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5); animation: ripple 2s infinite; opacity: 0;
+        }
+        @keyframes ripple { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
+        
+        .warming-up { border-color: #ff9a9e !important; color: #ff9a9e !important; box-shadow: 0 0 50px #ff9a9e; transform: scale(1.1); }
+        
+        #hug-instruction-text {
+            margin-top: 30px; font-family: 'Quicksand'; font-size: 1.2rem; color: rgba(255,255,255,0.9);
+            z-index: 7005; transition: opacity 1s; text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        #hug-message {
+            display: none; font-family: 'Dancing Script'; font-size: 2.2rem; color: #d81b60;
+            text-align: center; max-width: 80%; line-height: 1.6; z-index: 8000;
+            animation: fadeIn 2s; text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
         /* Animations */
@@ -373,18 +435,29 @@
     <div id="promise-layer">
         <button class="back-btn" onclick="goBackToSchedule('promise')">← Back to Calendar</button>
         <div id="promise-instruction">Link the promises together to seal them...</div>
-        
         <div class="promise-ring" id="ring-trust" style="top:20%; left:10%;">Trust</div>
         <div class="promise-ring" id="ring-love" style="top:80%; left:80%;">Love</div>
         <div class="promise-ring" id="ring-time" style="top:20%; left:80%;">Time</div>
         <div class="promise-ring" id="ring-forever" style="top:80%; left:10%;">Forever</div>
-
         <div id="promise-message-container">
             <div id="promise-message">
                 I promise to be your trust, your time,<br>
                 and your forever love.<br>
                 This chain will never break. 💍
             </div>
+        </div>
+    </div>
+
+    <div id="hug-layer">
+        <button class="back-btn" onclick="goBackToSchedule('hug')" style="z-index: 8000;">← Back to Calendar</button>
+        <div id="frost-overlay"></div>
+        <div id="hand-scanner" onmousedown="startWarmth()" onmouseup="endWarmth()" ontouchstart="startWarmth()" ontouchend="endWarmth()">✋</div>
+        <div id="hug-instruction-text">The world is cold without you... Hold to warm it up.</div>
+        <div id="hug-message">
+            My arms feel empty without you filling them.<br>
+            I don't just want to hug you; I want to melt into you,<br>
+            until there is no space left between us.<br>
+            I am craving your warmth...
         </div>
     </div>
 
@@ -432,7 +505,7 @@
             <div class="day-item" style="animation-delay: 0.3s" onclick="startChocolateDay()"><div class="day-icon">🍫</div><div><div class="day-date">Feb 9</div><div class="day-title">Chocolate Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.4s" onclick="startTeddyDay()"><div class="day-icon">🧸</div><div><div class="day-date">Feb 10</div><div class="day-title">Teddy Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.5s" onclick="startPromiseDay()"><div class="day-icon">🤝</div><div><div class="day-date">Feb 11</div><div class="day-title">Promise Day</div></div></div>
-            <div class="day-item" style="animation-delay: 0.6s"><div class="day-icon">🫂</div><div><div class="day-date">Feb 12</div><div class="day-title">Hug Day</div></div></div>
+            <div class="day-item" style="animation-delay: 0.6s" onclick="startHugDay()"><div class="day-icon">🫂</div><div><div class="day-date">Feb 12</div><div class="day-title">Hug Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.7s"><div class="day-icon">💋</div><div><div class="day-date">Feb 13</div><div class="day-title">Kiss Day</div></div></div>
             <div class="day-item" style="animation-delay: 0.8s; background: rgba(255,0,127,0.2); border: 1px solid rgba(255,0,127,0.5);"><div class="day-icon">❤️</div><div><div class="day-date">Feb 14</div><div class="day-title">Valentine's Day</div></div></div>
         </div>
@@ -473,8 +546,7 @@
             }
             if(fromLayer === 'promise') {
                 document.getElementById('promise-layer').style.display = 'none';
-                document.getElementById('promise-layer').classList.remove('night-glow'); // Reset bg
-                // Reset promise rings for replay
+                document.getElementById('promise-layer').classList.remove('night-glow');
                 const rings = document.querySelectorAll('.promise-ring');
                 rings.forEach(r => {
                     r.style.transform = 'translate(0,0) scale(1)';
@@ -486,6 +558,15 @@
                 document.getElementById('promise-message-container').style.display = 'none';
                 document.getElementById('promise-instruction').style.opacity = '1';
                 snappedRings = 0;
+            }
+            if(fromLayer === 'hug') {
+                document.getElementById('hug-layer').style.display = 'none';
+                document.getElementById('hug-layer').classList.remove('warm-mode', 'ice-cracking'); // Reset
+                document.getElementById('frost-overlay').style.opacity = '1';
+                document.getElementById('hug-message').style.display = 'none';
+                document.getElementById('hand-scanner').style.display = 'flex';
+                document.getElementById('hug-instruction-text').style.display = 'block';
+                endWarmth();
             }
 
             scheduleScreen.style.display = 'flex';
@@ -961,7 +1042,6 @@
 
         function initPromiseDrag() {
             const rings = document.querySelectorAll('.promise-ring');
-            // Horizontal chain slots
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             const slots = [
@@ -1016,31 +1096,84 @@
         function triggerPromiseReveal() {
             setTimeout(() => {
                 document.getElementById('promise-instruction').style.opacity = 0;
-                
-                // Vanish Rings
                 const rings = document.querySelectorAll('.promise-ring');
                 rings.forEach(r => r.classList.add('ring-vanish'));
-
-                // Glow Background
                 setTimeout(() => {
                     document.getElementById('promise-layer').classList.add('night-glow');
                     document.getElementById('promise-message-container').style.display = 'block';
-                    
-                    // Stars
                     for(let i=0; i<100; i++) {
                         const s = document.createElement('div');
                         s.style.position = 'absolute';
-                        s.style.width = Math.random() * 3 + 'px';
-                        s.style.height = s.style.width;
-                        s.style.background = 'white';
-                        s.style.borderRadius = '50%';
-                        s.style.left = Math.random() * 100 + 'vw';
-                        s.style.top = Math.random() * 100 + 'vh';
+                        s.style.width = Math.random() * 3 + 'px'; s.style.height = s.style.width;
+                        s.style.background = 'white'; s.style.borderRadius = '50%';
+                        s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
                         s.style.animation = `pulseStar ${Math.random()*2+1}s infinite`;
                         document.getElementById('promise-layer').appendChild(s);
                     }
                 }, 1000);
             }, 500);
+        }
+
+        // =========================================
+        // --- HUG DAY LOGIC (FROZEN) ---
+        // =========================================
+        let warmInterval;
+
+        function startHugDay() {
+            scheduleScreen.style.opacity = '0';
+            setTimeout(() => {
+                scheduleScreen.style.display = 'none';
+                document.getElementById('hug-layer').style.display = 'flex';
+            }, 500);
+        }
+
+        function startWarmth() {
+            const scanner = document.getElementById('hand-scanner');
+            const layer = document.getElementById('hug-layer');
+            scanner.classList.add('warming-up');
+            
+            // Add Shake
+            layer.classList.add('ice-cracking');
+            
+            if(navigator.vibrate) {
+                navigator.vibrate([100]); 
+                vibrateInterval = setInterval(() => { navigator.vibrate([100]); }, 800);
+            }
+
+            warmInterval = setTimeout(() => {
+                endWarmth();
+                // Success
+                document.getElementById('frost-overlay').style.opacity = '0';
+                layer.classList.remove('ice-cracking'); // Stop shake
+                layer.classList.add('warm-mode');
+                
+                document.getElementById('hand-scanner').style.display = 'none';
+                document.getElementById('hug-instruction-text').style.display = 'none';
+                
+                // Snow Rain
+                for(let i=0; i<50; i++) {
+                    const p = document.createElement('div');
+                    p.classList.add('snow-drop');
+                    p.innerHTML = '❄️';
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.getElementById('hug-layer').appendChild(p);
+                }
+
+                setTimeout(() => {
+                    document.getElementById('hug-message').style.display = 'block';
+                }, 1000);
+            }, 3000); // 3 seconds hold
+        }
+
+        function endWarmth() {
+            const scanner = document.getElementById('hand-scanner');
+            const layer = document.getElementById('hug-layer');
+            scanner.classList.remove('warming-up');
+            layer.classList.remove('ice-cracking');
+            clearTimeout(warmInterval);
+            clearInterval(vibrateInterval);
+            if(navigator.vibrate) navigator.vibrate(0);
         }
 
     </script>
